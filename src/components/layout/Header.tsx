@@ -62,6 +62,9 @@ export const Header = () => {
                     <Link href="/tools/image" style={{ fontWeight: 600 }}>Image Tools</Link>
                     <Link href="/tools/document" style={{ fontWeight: 600 }}>Document Tools</Link>
                     <Link href="/blog" style={{ fontWeight: 600 }}>Blog</Link>
+                    <a href="https://a1pay.co.in/" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#e11d48', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <span>⚡ A1Pay</span>
+                    </a>
                 </nav>
 
                 <div className="flex items-center gap-4">
