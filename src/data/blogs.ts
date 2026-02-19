@@ -20,7 +20,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '8 min read',
         icon: '📄',
         keywords: ['pdf to word', 'convert pdf to docx', 'online pdf converter', 'pdf editor', 'free pdf tools', 'editable word document'],
-        content: \`
+        content: `
             <h2>Introduction</h2>
             <p>In today's fast-paced digital world, the Portable Document Format (PDF) is the gold standard for sharing documents. It ensures that your resume, report, or contract looks exactly the same on every device. However, this strength is also its greatest weakness: PDFs are notoriously difficult to edit.</p>
             <p>We've all been there. You receive a PDF form that you need to fill out, or a report where you need to change just one paragraph. You try to copy and paste the text, but the formatting goes haywire. Creating the document from scratch in Microsoft Word seems like the only nightmare option.</p>
@@ -67,7 +67,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>Conclusion</h2>
             <p>Converting PDF to Word doesn't have to be a headache. With the right tools, it is a fast, free, and secure process. Bookmark our site for the next time you need to make a quick edit to a "locked" document.</p>
-        \`
+        `
     },
     {
         slug: 'create-pdf-from-word-documents',
@@ -78,7 +78,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '7 min read',
         icon: '📝',
         keywords: ['word to pdf', 'convert docx to pdf', 'create pdf', 'online converter', 'save as pdf', 'doc to pdf'],
-        content: \`
+        content: `
             <h2>Introduction</h2>
             <p>You've spent hours perfecting your resume, report, or ebook in Microsoft Word. You've chosen the perfect fonts, aligned the images just right, and set up your margins. You hit send. But when the recipient opens it on their phone, everything is broken. The images have jumped to the next page, and the font has been replaced by a default system font.</p>
             <p>This is the nightmare of sharing editable document formats like DOC or DOCX. They are "fluid" formats, meaning they re-flow based on the printer settings and screen size of the device viewing them.</p>
@@ -118,7 +118,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>Conclusion</h2>
             <p>The PDF format is the professional standard for a reason. By converting your Word documents to PDF, you elevate the perception of your work. It shows you care about presentation and accessibility. Use our free tool whenever you need a quick, reliable conversion.</p>
-        \`
+        `
     },
     {
         slug: 'how-to-merge-multiple-pdf-files',
@@ -129,7 +129,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '7 min read',
         icon: '🔗',
         keywords: ['merge pdf', 'combine pdf', 'join pdf files', 'pdf merger online', 'free pdf tools', 'consolidate documents'],
-        content: \`
+        content: `
             <h2>The Power of Merging</h2>
             <p>In project management, legal work, and academia, we often end up with fragmented files. You have the cover letter in one file, the main report in another, and the appendix in a third. Sending three separate attachments in an email looks unprofessional and is annoying for the recipient.</p>
             <p>The solution is to <strong>Merge PDF files</strong>. This process takes multiple independent PDF documents and stitches them together into a single, continuous file.</p>
@@ -156,7 +156,7 @@ export const BLOG_POSTS: BlogPost[] = [
             
             <h2>Conclusion</h2>
             <p>Merging is one of the most essential PDF skills. It turns clutter into clarity. Try our tool today and see how much cleaner your digital filing system can be.</p>
-        \`
+        `
     },
     {
         slug: 'splitting-pdf-pages-easily',
@@ -167,7 +167,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '6 min read',
         icon: '✂️',
         keywords: ['split pdf', 'extract pdf pages', 'separate pdf', 'pdf splitter online', 'cut pdf'],
-        content: \`
+        content: `
             <h2>Why Split a PDF?</h2>
             <p>We've all received that massive 100-page document where only pages 10 to 15 are actually relevant to us. Sharing the entire file is cumbersome, wastes bandwidth, and forces the recipient to hunt for the information.</p>
             <p><strong>Splitting a PDF</strong> allows you to perform surgery on your document. You can remove unnecessary cover pages, extract a single chapter, or break a large report into separate files for each department.</p>
@@ -189,7 +189,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>Conclusion</h2>
             <p>Don't let large files slow you down. Extract exactly what you need with our Split PDF tool. It's fast, free, and precise.</p>
-        \`
+        `
     },
     {
         slug: 'compressing-pdf-to-target-size',
@@ -200,7 +200,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '9 min read',
         icon: '📉',
         keywords: ['compress pdf', 'reduce pdf size', 'shrink pdf', 'pdf optimizer', 'online pdf compressor', 'below 1mb pdf'],
-        content: \`
+        content: `
             <h2>The "File Too Large" Error</h2>
             <p>It is the most frustrating error message on the internet. You are trying to upload your application, submit your tax return, or send an email attachment, and you get blocked. "Error: File size exceeds 5MB limit."</p>
             <p>PDFs can get bloated very easily. High-resolution images, embedded fonts, and hidden metadata can turn a 2-page document into a 20MB monster. This is where <strong>PDF Compression</strong> saves the day.</p>
@@ -223,7 +223,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
             <h2>Conclusion</h2>
             <p>Stop fighting with upload limits. Compress your PDFs in seconds and ensure your emails always get delivered.</p>
-        \`
+        `
     },
     {
         slug: 'converting-images-to-pdf',
@@ -234,7 +234,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '6 min read',
         icon: '🖼️',
         keywords: ['jpg to pdf', 'convert images to pdf', 'png to pdf', 'image to pdf online', 'create pdf from pics', 'digital portfolio'],
-        content: \`
+        content: `
             <h2>Why Wrap Images in PDF?</h2>
             <p>Sharing 20 separate image files attached to an email is a recipe for disaster. They get downloaded out of order, viewed in different sizes, and clutter the recipient's downloads folder.</p>
             <p>Converting **JPG to PDF** acts like a digital staple. It binds all your images into a single, scrollable booklet.</p>
@@ -250,7 +250,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Sequence:</strong> They will be added to the PDF in the order you selected. You can drag to reorder.</li>
                 <li><strong>Download:</strong> Get your image-rich PDF instantly.</li>
             </ol>
-        \`
+        `
     },
     {
         slug: 'extract-images-from-pdf',
@@ -261,7 +261,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '6 min read',
         icon: '📸',
         keywords: ['pdf to jpg', 'pdf to image', 'convert pdf to jpeg', 'extract pics from pdf', 'pdf to png'],
-        content: \`
+        content: `
             <h2>Liberating Your Content</h2>
             <p>PDFs are great for documents, but terrible for social media. You can't upload a PDF to Instagram or use it as a thumbnail on YouTube. That's where **PDF to JPG** conversion shines.</p>
             <p>It turns every page of your document into a standalone image file, giving you the freedom to use that content anywhere images are accepted.</p>
@@ -275,7 +275,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Process:</strong> Our tool renders each page into a high-quality JPEG.</li>
                 <li><strong>Download:</strong> You'll get a ZIP file containing all your page images.</li>
             </ol>
-        \`
+        `
     },
     {
         slug: 'compress-images-without-quality-loss',
@@ -286,7 +286,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '7 min read',
         icon: '🗜️',
         keywords: ['compress image', 'reduce image size', 'image optimizer online', 'shrink photos', 'web optimization'],
-        content: \`
+        content: `
             <h2>The Speed of the Web</h2>
             <p>47% of consumers expect a web page to load in 2 seconds or less. The #1 culprit for slow websites? Unoptimized images. A raw photo from your phone can be 5MB. For a website, it should be under 200KB.</p>
             <p>Our **Image Compressor** bridges this gap. It removes invisible metadata and optimizes color profiles to slash file size by up to 80% without making the image look "blocky" or blurry.</p>
@@ -300,7 +300,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Compress:</strong> We use smart algorithms to reduce file size.</li>
                 <li><strong>Profit:</strong> Enjoy smaller files. Your website loads faster, and your SEO improves.</li>
             </ol>
-        \`
+        `
     },
     {
         slug: 'resizing-images-to-exact-dimensions',
@@ -311,7 +311,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '5 min read',
         icon: '📏',
         keywords: ['resize image', 'change image dimensions', 'passport size photo online', 'image resizer', 'social media sizes'],
-        content: \`
+        content: `
             <h2>Why Resize?</h2>
             <p>Every platform has requirements. Instagram loves 1080x1080. LinkedIn banners need 1584x396. Passports require strictly 35x45mm (in pixels). Trying to guess usually results in cropped or stretched images.</p>
             <p><strong>Resizing</strong> allows you to force an image to fit these specific boxes without relying on the platform's often poor auto-cropping tools.</p>
@@ -322,7 +322,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Percentage Scaling:</strong> Quickly reduce an image to 50% or 75% of its current size.</li>
                 <li><strong>Custom Pixels:</strong> Enter exact numbers for precise control.</li>
             </ul>
-        \`
+        `
     },
     {
         slug: 'perfect-cropping-for-your-photos',
@@ -333,7 +333,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '5 min read',
         icon: '✂️',
         keywords: ['crop image', 'photo cropper online', 'cut image', 'instagram crop', 'composition rule of thirds'],
-        content: \`
+        content: `
             <h2>The Art of Cropping</h2>
             <p>Cropping isn't just about making an image smaller; it's about storytelling. By removing distracting background elements, you draw the viewer's eye to the subject.</p>
             <p>It's also functional. If you have a landscape photo but need a portrait version for a TikTok background, cropping is the only way to adapt the content.</p>
@@ -344,7 +344,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>Ratio:</strong> Pick 1:1 for Instagram, 16:9 for banners, or "Free" to drag the handles manually.</li>
                 <li><strong>Cut:</strong> Download your perfectly framed image.</li>
             </ol>
-        \`
+        `
     },
     {
         slug: 'transform-jpg-to-png-transparency',
@@ -355,12 +355,12 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '5 min read',
         icon: '✨',
         keywords: ['jpg to png', 'convert jpeg to png online', 'png with transparency', 'lossless compression'],
-        content: \`
+        content: `
             <h2>JPG vs PNG: Short Guide</h2>
             <p><strong>JPG</strong> is for photos. It handles millions of colors efficiently but loses quality every time you save.</p>
             <p><strong>PNG</strong> is for graphics, logos, and screenshots. It is "lossless" (pixel perfect) and supports transparency (invisible backgrounds).</p>
             <p>If you have a logo saved as a JPG, it likely has a white box around it. Converting it to PNG is the first step in removing that background (though the conversion alone doesn't remove it, it enables the potential for it).</p>
-        \`
+        `
     },
     {
         slug: 'convert-image-to-editable-excel',
@@ -371,7 +371,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '10 min read',
         icon: '📊',
         keywords: ['image to excel', 'jpg to xlsx', 'ocr image to text', 'extract table from image', 'data entry automation'],
-        content: \`
+        content: `
             <h2>The Problem with Data Entry</h2>
             <p>You have a printed invoice, a screenshot of a financial report, or a photo of a whiteboard table. You need that data in Excel to run calculations. Traditionally, you would open Excel on one screen, the image on another, and spend hours manually typing every number. One typo could ruin your entire analysis.</p>
             
@@ -383,7 +383,7 @@ export const BLOG_POSTS: BlogPost[] = [
             <p>1. <strong>Upload:</strong> Take a clear photo of your document. Good lighting helps!</p>
             <p>2. <strong>Wait for OCR:</strong> The engine scans the image line by line.</p>
             <p>3. <strong>Download XLSX:</strong> You get a file you can open immediately in Excel or Google Sheets.</p>
-        \`
+        `
     },
     {
         slug: 'convert-excel-to-professional-pdf',
@@ -394,7 +394,7 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '5 min read',
         icon: '📈',
         keywords: ['excel to pdf', 'convert xlsx to pdf', 'spreadsheet to pdf', 'online excel converter', 'pdf tables'],
-        content: \`
+        content: `
             <h2>Why PDF for Spreadsheets?</h2>
             <p>Sending a live Excel file is risky. Hidden formulas can be broken, columns can be accidentally hidden, and print areas can shift. A PDF captures the data exactly as you intend it to be viewed, acting like a digital printout.</p>
             <h2>Advanced Features</h2>
@@ -402,7 +402,7 @@ export const BLOG_POSTS: BlogPost[] = [
                 <li><strong>All Sheets included:</strong> Our converter processes the entire workbook, not just the active tab.</li>
                 <li><strong>Formatting Preserved:</strong> Colors, borders, and fonts are kept intact.</li>
             </ul>
-        \`
+        `
     },
     {
         slug: 'convert-powerpoint-to-pdf-instantly',
@@ -413,12 +413,12 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '4 min read',
         icon: '📽️',
         keywords: ['ppt to pdf', 'powerpoint to pdf online', 'convert slides to pdf', 'presentations to pdf'],
-        content: \`
+        content: `
             <h2>Universal Presentations</h2>
             <p>Not everyone has PowerPoint installed. Converting to PDF ensures your slides look perfect on any device, from mobile phones to high-res monitors. It also prevents people from "borrowing" your slide designs or editing your content.</p>
             <h2>Perfect for Handouts</h2>
             <p>If you are giving a lecture, providing a PDF version of your slides is the professional way to give students or colleagues a reference document they can annotate.</p>
-        \`
+        `
     },
     {
         slug: 'html-to-pdf-web-page-conversion',
@@ -429,12 +429,12 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '5 min read',
         icon: '🌐',
         keywords: ['html to pdf', 'web page to pdf', 'convert url to pdf', 'save website as pdf'],
-        content: \`
+        content: `
             <h2>Archive the Web</h2>
             <p>Web content is ephemeral. A link that works today might be a 404 error tomorrow. Converting HTML to PDF lets you keep a permanent, offline record of important information, receipts, or research materials.</p>
             <h2>How it Works</h2>
             <p>Our engine runs a headless browser that visits the page, renders the full CSS and Javascript, and then "prints" the result to a high-fidelity PDF, just like if you printed it from Chrome but without the headers/footers mess.</p>
-        \`
+        `
     },
     {
         slug: 'extract-audio-from-video-mp4-to-mp3',
@@ -445,10 +445,10 @@ export const BLOG_POSTS: BlogPost[] = [
         readTime: '5 min read',
         icon: '🎵',
         keywords: ['mp4 to mp3', 'video to audio converter', 'extract mp3 from video', 'online audio extractor'],
-        content: \`
+        content: `
             <h2>From Vision to Sound</h2>
             <p>Podcasts are exploding in popularity. You might have a video recording of a lecture or meeting, but you only need to listen to the dialogue while driving. Our <strong>MP4 to MP3</strong> converter strips away the visual data, leaving you with a lightweight, high-quality audio file compatible with any music player.</p>
             <p>It's also great for musicians who want to extract a backing track or sample from a video file.</p>
-        \`
+        `
     }
 ];
