@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SchemaMarkup } from "@/components/layout/SchemaMarkup";
-import { GDPRConsent } from "@/components/layout/GDPRConsent";
 import { AdSpace } from "@/components/ui/AdSpace";
 
 import { AuthContext } from "@/components/layout/AuthContext";
@@ -83,7 +82,6 @@ export default async function RootLayout({
                 </div>
               )}
               <Footer />
-              <GDPRConsent />
 
               {/* Custom Footer Scripts */}
               {settings.footerScripts && (

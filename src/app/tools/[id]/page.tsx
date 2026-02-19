@@ -1,8 +1,14 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { TOOLS, Tool } from '@/data/tools';
+import { TOOLS, Tool, TOOL_CATEGORIES } from '@/data/tools';
 import { ToolInterface } from '@/components/tools/ToolInterface';
+import { TextToolInterface } from '@/components/tools/TextToolInterface';
+import { CalculatorInterface } from '@/components/tools/CalculatorInterface';
+import { SecurityToolInterface } from '@/components/tools/SecurityToolInterface';
+import { DeveloperToolInterface } from '@/components/tools/DeveloperToolInterface';
+import { AIToolInterface } from '@/components/tools/AIToolInterface';
+import { StudentToolInterface } from '@/components/tools/StudentToolInterface';
 import { useState, useEffect } from 'react';
 
 const RESIZE_PRESETS = [
@@ -76,6 +82,34 @@ export default function ToolPage() {
 
     // Use toolData instead of tool derived variable
     const currentTool = toolData;
+
+    // --- Conditional Rendering based on Category ---
+
+    if (currentTool.category === TOOL_CATEGORIES.TEXT) {
+        return <TextToolInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
+    }
+
+    if (currentTool.category === TOOL_CATEGORIES.FINANCE) {
+        return <CalculatorInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
+    }
+
+    if (currentTool.category === TOOL_CATEGORIES.SECURITY && currentTool.id === 'password-generator') {
+        return <SecurityToolInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
+    }
+
+    if (currentTool.category === TOOL_CATEGORIES.DEVELOPER) {
+        return <DeveloperToolInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
+    }
+
+    if (currentTool.category === TOOL_CATEGORIES.AI) {
+        return <AIToolInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
+    }
+
+    if (currentTool.category === TOOL_CATEGORIES.STUDENT) {
+        return <StudentToolInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
+    }
+
+    // --- Standard File Conversion Tool Logic ---
 
     const handleConvert = async (files: File[]) => {
         // Intercept Client-Side conversions

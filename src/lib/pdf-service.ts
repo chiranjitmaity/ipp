@@ -1,4 +1,4 @@
-import { PDFDocument, StandardFonts } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import sharp from 'sharp';
 
 // DOMMatrix polyfill for Node.js environment (required by some versions of pdf-js/pdf-parse)
@@ -314,11 +314,117 @@ export class PDFService {
 
             case 'split-pdf': {
                 const pdfDoc = await PDFDocument.load(primaryBuffer);
+                // Default: just first page for now if no range specified
+                // In a real app we'd parse specific ranges from options
                 const splitDoc = await PDFDocument.create();
                 const [firstPage] = await splitDoc.copyPages(pdfDoc, [0]);
                 splitDoc.addPage(firstPage);
                 outputBuffer = Buffer.from(await splitDoc.save());
                 filename = 'split_page_1.pdf';
+                break;
+            }
+
+            case 'pdf-repair': {
+                // "Repair" by loading and saving, which reconstructs the XRef table
+                const pdfDoc = await PDFDocument.load(primaryBuffer, { ignoreEncryption: true });
+                outputBuffer = Buffer.from(await pdfDoc.save());
+                filename = `repaired_${Date.now()}.pdf`;
+                break;
+            }
+
+            case 'flatten-pdf': {
+                const pdfDoc = await PDFDocument.load(primaryBuffer);
+                const form = pdfDoc.getForm();
+                form.flatten();
+                outputBuffer = Buffer.from(await pdfDoc.save());
+                filename = `flattened_${Date.now()}.pdf`;
+                break;
+            }
+
+            case 'remove-metadata': {
+                const pdfDoc = await PDFDocument.load(primaryBuffer);
+                pdfDoc.setTitle('');
+                pdfDoc.setAuthor('');
+                pdfDoc.setSubject('');
+                pdfDoc.setKeywords([]);
+                pdfDoc.setProducer('');
+                pdfDoc.setCreator('');
+                outputBuffer = Buffer.from(await pdfDoc.save());
+                filename = `clean_${Date.now()}.pdf`;
+                break;
+            }
+
+            case 'add-page-numbers': {
+                const pdfDoc = await PDFDocument.load(primaryBuffer);
+                const pages = pdfDoc.getPages();
+                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+                for (let i = 0; i < pages.length; i++) {
+                    const page = pages[i];
+                    const { width } = page.getSize();
+                    page.drawText(`${i + 1} / ${pages.length}`, {
+                        x: width / 2 - 10,
+                        y: 20,
+                        size: 10,
+                        font,
+                        color: rgb(0, 0, 0),
+                    });
+                }
+                outputBuffer = Buffer.from(await pdfDoc.save());
+                filename = `numbered_${Date.now()}.pdf`;
+                break;
+            }
+
+            case 'add-header-footer': {
+                const pdfDoc = await PDFDocument.load(primaryBuffer);
+                const pages = pdfDoc.getPages();
+                const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+                // Assuming standard header/footer text for now
+                // In real implementation, these would come from options
+                const headerText = "Processed by ilovepdftools";
+                const footerText = new Date().toLocaleDateString();
+
+                for (const page of pages) {
+                    const { width, height } = page.getSize();
+
+                    // Header
+                    page.drawText(headerText, {
+                        x: 50,
+                        y: height - 30,
+                        size: 10,
+                        font,
+                        color: rgb(0.5, 0.5, 0.5),
+                    });
+
+                    // Footer
+                    page.drawText(footerText, {
+                        x: width - 100,
+                        y: 20,
+                        size: 10,
+                        font,
+                        color: rgb(0.5, 0.5, 0.5),
+                    });
+                }
+                outputBuffer = Buffer.from(await pdfDoc.save());
+                filename = `header_footer_${Date.now()}.pdf`;
+                break;
+            }
+
+            case 'extract-pages': {
+                // For now, extract first 50% of pages as a demo
+                // Real impl needs option parsing
+                const pdfDoc = await PDFDocument.load(primaryBuffer);
+                const pageCount = pdfDoc.getPageCount();
+                const extractDoc = await PDFDocument.create();
+
+                // Extract first half
+                const range = Array.from({ length: Math.ceil(pageCount / 2) }, (_, i) => i);
+                const pages = await extractDoc.copyPages(pdfDoc, range);
+                pages.forEach(p => extractDoc.addPage(p));
+
+                outputBuffer = Buffer.from(await extractDoc.save());
+                filename = `extracted_${Date.now()}.pdf`;
                 break;
             }
 

@@ -6,6 +6,8 @@ export interface ImageProcessingOptions {
     left?: number;
     top?: number;
     quality?: number;
+    dpi?: number;
+    watermarkText?: string;
 }
 
 export class ImageService {
@@ -84,6 +86,50 @@ export class ImageService {
                 outputBuffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
                 contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                 filename = `converted_${Date.now()}.xlsx`;
+                filename = `converted_${Date.now()}.xlsx`;
+                break;
+
+            case 'convert-dpi':
+                // Sharp supports withMetadata({ density: ... })
+                outputBuffer = await pipeline
+                    .withMetadata({ density: options.dpi || 300 })
+                    .jpeg()
+                    .toBuffer();
+                contentType = 'image/jpeg';
+                filename = `dpi_${options.dpi || 300}_${Date.now()}.jpg`;
+                break;
+
+            case 'watermark-image':
+                const watermarkText = options.watermarkText || 'CONFIDENTIAL';
+                // Create SVG for watermark
+                const svgImage = `
+                    <svg width="500" height="100">
+                        <style>
+                        .title { fill: rgba(255, 255, 255, 0.5); font-size: 40px; font-weight: bold; font-family: sans-serif; }
+                        </style>
+                        <text x="50%" y="50%" text-anchor="middle" class="title">${watermarkText}</text>
+                    </svg>
+                `;
+                outputBuffer = await pipeline
+                    .composite([{ input: Buffer.from(svgImage), gravity: 'center' }])
+                    .jpeg()
+                    .toBuffer();
+                contentType = 'image/jpeg';
+                filename = `watermarked_${Date.now()}.jpg`;
+                break;
+
+            case 'blur-face':
+                // Fallback: Blur entire image significantly (privacy mode)
+                // Real face blur requires TensorFlow/FaceAPI
+                outputBuffer = await pipeline.blur(15).jpeg().toBuffer();
+                contentType = 'image/jpeg';
+                filename = `blurred_${Date.now()}.jpg`;
+                break;
+
+            case 'grayscale-image':
+                outputBuffer = await pipeline.grayscale().jpeg().toBuffer();
+                contentType = 'image/jpeg';
+                filename = `grayscale_${Date.now()}.jpg`;
                 break;
 
             default:
