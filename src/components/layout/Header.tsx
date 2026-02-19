@@ -88,21 +88,23 @@ export const Header = () => {
                         />
                         {/* Search Results Dropdown */}
                         {isSearchOpen && searchQuery && (
-                            <div style={{
-                                position: 'absolute',
-                                top: '100%',
-                                left: 0,
-                                right: 0,
-                                marginTop: '0.5rem',
-                                backgroundColor: 'var(--card)',
-                                border: '1px solid var(--border)',
-                                borderRadius: 'var(--radius)',
-                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                                zIndex: 1001,
-                                maxHeight: '300px',
-                                overflowY: 'auto',
-                                width: '300px'
-                            }}>
+                            <div
+                                onMouseDown={(e) => e.preventDefault()} // Prevent input blur on click
+                                style={{
+                                    position: 'absolute',
+                                    top: '100%',
+                                    left: 0,
+                                    right: 0,
+                                    marginTop: '0.5rem',
+                                    backgroundColor: 'var(--card)',
+                                    border: '1px solid var(--border)',
+                                    borderRadius: 'var(--radius)',
+                                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                                    zIndex: 1001,
+                                    maxHeight: '300px',
+                                    overflowY: 'auto',
+                                    width: '300px'
+                                }}>
                                 {searchResults.length > 0 ? (
                                     <div className="flex flex-col">
                                         {searchResults.map(tool => (
