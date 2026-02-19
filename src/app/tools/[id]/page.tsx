@@ -78,6 +78,22 @@ export default function ToolPage() {
     const currentTool = toolData;
 
     const handleConvert = async (files: File[]) => {
+        // Intercept Client-Side conversions
+        if (currentTool.id === 'image-to-excel') {
+            try {
+                // Dynamic import to avoid SSR issues with heavy libs
+                const { convertImageToExcelClient } = await import('@/lib/client-converters');
+                const url = await convertImageToExcelClient(files, (progress) => {
+                    // Start progress bar visual (optional enhancement later)
+                    console.log(`OCR Progress: ${Math.round(progress)}%`);
+                });
+                return { success: true, downloadUrl: url };
+            } catch (error) {
+                console.error("Client conversion failed:", error);
+                return { success: false, error: error instanceof Error ? error.message : "Client-side conversion failed" };
+            }
+        }
+
         const formData = new FormData();
         files.forEach((file) => {
             formData.append('files', file);
