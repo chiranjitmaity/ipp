@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useTheme } from './ThemeProvider';
 import { Sun, Moon, Search, Menu, FileText } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { TOOLS, Tool } from '@/data/tools';
 
 import { useSession, signOut } from 'next-auth/react';
 
@@ -13,17 +14,31 @@ export const Header = () => {
     const { theme, toggleTheme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { data: session } = useSession();
-    const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const query = e.target.value;
+    // Search State
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState<Tool[]>([]);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-        if (searchTimeout) clearTimeout(searchTimeout);
+    useEffect(() => {
+        if (searchQuery.trim() === '') {
+            setSearchResults([]);
+            setIsSearchOpen(false);
+            return;
+        }
 
-        setSearchTimeout(setTimeout(() => {
-            AnalyticsService.trackSearch(query);
-        }, 1000));
-    };
+        const query = searchQuery.toLowerCase();
+        const results = TOOLS.filter(tool =>
+            tool.title.toLowerCase().includes(query) ||
+            tool.description.toLowerCase().includes(query) ||
+            tool.category.toLowerCase().includes(query) ||
+            tool.id.toLowerCase().includes(query)
+        );
+
+        setSearchResults(results);
+        setIsSearchOpen(true);
+        AnalyticsService.trackSearch(query); // Track search queries
+    }, [searchQuery]);
 
     return (
         <header className="header" style={{
@@ -58,7 +73,10 @@ export const Header = () => {
                         <input
                             type="text"
                             placeholder="Search tools..."
-                            onChange={handleSearch}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onFocus={() => { if (searchQuery) setIsSearchOpen(true); }}
+                            onBlur={() => setTimeout(() => setIsSearchOpen(false), 200)} // Delay to allow click
                             style={{
                                 padding: '0.5rem 1rem 0.5rem 2.5rem',
                                 borderRadius: '20px',
@@ -68,6 +86,57 @@ export const Header = () => {
                                 width: '200px'
                             }}
                         />
+                        {/* Search Results Dropdown */}
+                        {isSearchOpen && searchQuery && (
+                            <div style={{
+                                position: 'absolute',
+                                top: '100%',
+                                left: 0,
+                                right: 0,
+                                marginTop: '0.5rem',
+                                backgroundColor: 'var(--card)',
+                                border: '1px solid var(--border)',
+                                borderRadius: 'var(--radius)',
+                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                                zIndex: 1001,
+                                maxHeight: '300px',
+                                overflowY: 'auto',
+                                width: '300px'
+                            }}>
+                                {searchResults.length > 0 ? (
+                                    <div className="flex flex-col">
+                                        {searchResults.map(tool => (
+                                            <Link
+                                                key={tool.id}
+                                                href={tool.href}
+                                                onClick={() => {
+                                                    setIsSearchOpen(false);
+                                                    setSearchQuery('');
+                                                }}
+                                                style={{
+                                                    padding: '0.75rem 1rem',
+                                                    borderBottom: '1px solid var(--border)',
+                                                    textDecoration: 'none',
+                                                    color: 'var(--foreground)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem',
+                                                    fontSize: '0.875rem'
+                                                }}
+                                                className="hover:bg-gray-100 dark:hover:bg-gray-800"
+                                            >
+                                                <tool.icon size={16} />
+                                                <span>{tool.title}</span>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--muted)', fontSize: '0.875rem' }}>
+                                        No tools found
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                     {session ? (
                         <div className="flex items-center gap-3">
