@@ -136,6 +136,15 @@ export const TOOLS: Tool[] = [
 
     // Document Tools
     {
+        id: 'image-to-excel',
+        title: 'Image to Excel',
+        description: 'Convert images (JPG, PNG) to Editable Excel spreadsheets.',
+        category: TOOL_CATEGORIES.DOCUMENT,
+        icon: FileSpreadsheet,
+        href: '/tools/image-to-excel',
+        accept: 'image/*',
+    },
+    {
         id: 'excel-to-pdf',
         title: 'Excel to PDF',
         description: 'Convert Excel spreadsheets to PDF format.',

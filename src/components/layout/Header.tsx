@@ -89,6 +89,35 @@ export const Header = () => {
                 </div>
             </div>
 
+            {/* Mobile Menu Overlay */}
+            {
+                isMenuOpen && (
+                    <div
+                        style={{
+                            position: 'fixed',
+                            top: 'var(--header-height)',
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: 'var(--background)',
+                            zIndex: 999,
+                            padding: '2rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1.5rem',
+                            overflowY: 'auto'
+                        }}
+                    >
+                        <nav className="flex flex-col gap-4">
+                            <Link href="/tools/pdf" onClick={() => setIsMenuOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 600 }}>PDF Tools</Link>
+                            <Link href="/tools/image" onClick={() => setIsMenuOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 600 }}>Image Tools</Link>
+                            <Link href="/tools/document" onClick={() => setIsMenuOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 600 }}>Document Tools</Link>
+                            <Link href="/blog" onClick={() => setIsMenuOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 600 }}>Blog</Link>
+                        </nav>
+                    </div>
+                )
+            }
+
             <style jsx>{`
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
@@ -102,6 +131,6 @@ export const Header = () => {
             .search-container { display: none !important; }
         }
       `}</style>
-        </header>
+        </header >
     );
 };

@@ -60,6 +60,32 @@ export class ImageService {
                 filename = `cropped_${Date.now()}.jpg`;
                 break;
 
+            case 'image-to-excel':
+                const Tesseract = (await import('tesseract.js')).default || await import('tesseract.js');
+                const XLSX = (await import('xlsx')).default || await import('xlsx');
+
+                // Recognize text from image buffer
+                const { data: { text } } = await Tesseract.recognize(
+                    buffer,
+                    'eng',
+                    // { logger: m => console.log(m) } // Optional logger
+                );
+
+                // Create a workbook and worksheet
+                const wb = XLSX.utils.book_new();
+
+                // Parse text into rows (simple newline split)
+                const rows = text.split('\n').map(line => [line.trim()]).filter(row => row[0].length > 0);
+
+                const ws = XLSX.utils.aoa_to_sheet(rows);
+                XLSX.utils.book_append_sheet(wb, ws, "Extracted Data");
+
+                // Write to buffer
+                outputBuffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+                contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                filename = `converted_${Date.now()}.xlsx`;
+                break;
+
             default:
                 outputBuffer = await pipeline.jpeg().toBuffer();
                 contentType = 'image/jpeg';

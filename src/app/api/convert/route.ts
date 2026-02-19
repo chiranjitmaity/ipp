@@ -28,7 +28,9 @@ export async function POST(req: NextRequest) {
         const buffers = await Promise.all(processedFiles.map(async (f) => Buffer.from(await f.arrayBuffer())));
         let result: { buffer: Buffer; contentType: string; filename: string };
 
-        if (toolId.includes('pdf') || toolId.includes('word') || toolId.includes('excel') || toolId.includes('ppt') || toolId.includes('text')) {
+        if (toolId === 'image-to-excel') {
+            result = await ImageService.process(buffers[0], toolId);
+        } else if (toolId.includes('pdf') || toolId.includes('word') || toolId.includes('excel') || toolId.includes('ppt') || toolId.includes('text')) {
             // PDF or Document related tools
             result = await PDFService.process(buffers, toolId, { targetSize: targetSize ? parseFloat(targetSize) : undefined });
         } else if (toolId.includes('mp4') || toolId.includes('mp3') || toolId.includes('video')) {
