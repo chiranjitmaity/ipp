@@ -325,10 +325,76 @@ export class PDFService {
             }
 
             case 'pdf-repair': {
-                // "Repair" by loading and saving, which reconstructs the XRef table
-                const pdfDoc = await PDFDocument.load(primaryBuffer, { ignoreEncryption: true });
-                outputBuffer = Buffer.from(await pdfDoc.save());
-                filename = `repaired_${Date.now()}.pdf`;
+                try {
+                    // 1. Try "Structural Repair" by loading and saving (reconstructs XRef)
+                    const pdfDoc = await PDFDocument.load(primaryBuffer, { ignoreEncryption: true });
+                    outputBuffer = Buffer.from(await pdfDoc.save());
+                    filename = `repaired_${Date.now()}.pdf`;
+                } catch (err) {
+                    console.error("Standard PDF repair failed, attempting content recovery:", err);
+
+                    // 2. Fallback: Content Recovery (Text)
+                    // If proper repair fails, we try to scrape readable text and put it in a new PDF.
+                    try {
+                        const pdfParse = (await import('pdf-parse')).default || await import('pdf-parse');
+                        const parsedData = await pdfParse(primaryBuffer);
+                        const extractedText = parsedData.text || '';
+
+                        if (!extractedText.trim()) {
+                            throw new Error("No recoverable text found in corrupted PDF.");
+                        }
+
+                        const recoveryDoc = await PDFDocument.create();
+                        const font = await recoveryDoc.embedFont(StandardFonts.Helvetica);
+                        const fontSize = 11;
+                        const margin = 50;
+
+                        let page = recoveryDoc.addPage();
+                        const { width, height } = page.getSize();
+                        let y = height - margin;
+
+                        // Add a disclaimer header
+                        page.drawText("RECOVERED CONTENT (Original file was corrupted)", {
+                            x: margin,
+                            y: y,
+                            size: 14,
+                            font: await recoveryDoc.embedFont(StandardFonts.HelveticaBold),
+                            color: rgb(1, 0, 0)
+                        });
+                        y -= 30;
+
+                        // Simple text wrapping (reusing logic from word-to-pdf if possible, or simplified here)
+                        const lines = extractedText.split('\n');
+                        for (const line of lines) {
+                            // Sanitize line
+                            const cleanLine = line.replace(/[^\x20-\x7E\s]/g, '?').trim(); // Basic ASCII filter for safety
+                            if (!cleanLine) continue;
+
+                            if (y < margin) {
+                                page = recoveryDoc.addPage();
+                                y = height - margin;
+                            }
+
+                            // Check width (simplified wrap)
+                            const textWidth = font.widthOfTextAtSize(cleanLine, fontSize);
+                            if (textWidth > width - margin * 2) {
+                                // Cut off for now or simple split? Let's just draw it; pdf-lib doesn't auto-wrap.
+                                // For robust repair, we just dump text. 
+                                page.drawText(cleanLine.substring(0, 100) + '...', { x: margin, y, size: fontSize, font });
+                            } else {
+                                page.drawText(cleanLine, { x: margin, y, size: fontSize, font });
+                            }
+                            y -= 14;
+                        }
+
+                        outputBuffer = Buffer.from(await recoveryDoc.save());
+                        filename = `recovered_${Date.now()}.pdf`;
+
+                    } catch (recoveryErr) {
+                        console.error("Recovery also failed:", recoveryErr);
+                        throw new Error("Unable to repair or recover content from this PDF.");
+                    }
+                }
                 break;
             }
 
