@@ -51,13 +51,12 @@ export default async function RootLayout({
       <head>
         <SchemaMarkup />
         {/* AdSense Script */}
-        {settings.adSenseId && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${settings.adSenseId}`}
-            crossOrigin="anonymous"
-          />
-        )}
+        {/* AdSense Script */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7516452210223319"
+          crossOrigin="anonymous"
+        />
         {/* Custom Header Scripts */}
         {settings.headerScripts && (
           <div dangerouslySetInnerHTML={{ __html: settings.headerScripts }} />
