@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import BlogIndexClient from '@/components/blog/BlogIndexClient';
+import { BlogService } from '@/lib/blog-service';
 
 export const metadata: Metadata = {
     title: 'Blog & Tutorials | ilovepdftools',
@@ -7,6 +8,9 @@ export const metadata: Metadata = {
     keywords: 'pdf tutorials, online file converter guides, merge pdf help, compress pdf tips, excel to pdf guide, image editing tutorials',
 };
 
-export default function BlogIndexPage() {
-    return <BlogIndexClient />;
+export const revalidate = 60; // Revalidate every minute for dynamic content
+
+export default async function BlogIndexPage() {
+    const posts = await BlogService.getAllBlogs();
+    return <BlogIndexClient posts={posts} />;
 }

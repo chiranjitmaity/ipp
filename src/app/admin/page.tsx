@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, FileText, Settings, BarChart3, Users, Trash2, Power } from 'lucide-react';
+import { LayoutDashboard, FileText, Settings, BarChart3, Users, Trash2, Power, Edit, Plus, X } from 'lucide-react';
 import { Tool, TOOLS } from '@/data/tools';
 import { AnalyticsEvent } from '@/lib/analytics-service';
 
@@ -9,8 +9,23 @@ export default function AdminDashboard() {
     const [activeTab, setActiveTab] = useState('dashboard');
     const [tools, setTools] = useState<Tool[]>(TOOLS);
     const [analytics, setAnalytics] = useState<AnalyticsEvent[]>([]);
+    const [visitorStats, setVisitorStats] = useState<{ date: string; count: number }[]>([]);
+    const [blogs, setBlogs] = useState<any[]>([]);
     const [newTool, setNewTool] = useState<{ title: string; id: string; description: string; category: string; code?: string }>({ title: '', id: '', description: '', category: 'PDF Tools', code: '' });
     const [loading, setLoading] = useState(false);
+
+    // Blog State
+    const [isEditingBlog, setIsEditingBlog] = useState(false);
+    const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
+    const [blogForm, setBlogForm] = useState({
+        title: '',
+        slug: '',
+        description: '',
+        content: '',
+        toolId: '',
+        keywords: '',
+        date: ''
+    });
 
     // Monetization Settings State
     const [settings, setSettings] = useState({
@@ -31,7 +46,36 @@ export default function AdminDashboard() {
     const fetchAnalytics = async () => {
         const res = await fetch('/api/analytics');
         const data = await res.json();
-        if (Array.isArray(data)) setAnalytics(data);
+        if (Array.isArray(data)) {
+            setAnalytics(data);
+
+            // Process visitor stats
+            const visits = data.filter((e: any) => e.type === 'visitor');
+            const dailyCounts: Record<string, Set<string>> = {};
+
+            visits.forEach((v: any) => {
+                const date = new Date(v.createdAt).toLocaleDateString();
+                if (!dailyCounts[date]) dailyCounts[date] = new Set();
+                if (v.ip) dailyCounts[date].add(v.ip); // Use IP or Session ID for uniqueness
+            });
+
+            const stats = Object.entries(dailyCounts).map(([date, ips]) => ({
+                date,
+                count: ips.size
+            })).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 7); // Last 7 days
+
+            setVisitorStats(stats);
+        }
+    };
+
+    const fetchBlogs = async () => {
+        try {
+            const res = await fetch('/api/admin/blogs');
+            const data = await res.json();
+            if (Array.isArray(data)) setBlogs(data);
+        } catch (error) {
+            console.error("Failed to fetch blogs", error);
+        }
     };
 
     const fetchSettings = async () => {
@@ -54,8 +98,9 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         if (activeTab === 'tools') fetchTools();
-        if (activeTab === 'analytics') fetchAnalytics();
+        if (activeTab === 'analytics' || activeTab === 'dashboard') fetchAnalytics();
         if (activeTab === 'monetization') fetchSettings();
+        if (activeTab === 'blogs') fetchBlogs();
     }, [activeTab]);
 
     const handleSaveSettings = async (e: React.FormEvent) => {
@@ -74,8 +119,6 @@ export default function AdminDashboard() {
         setSettingsLoading(false);
     };
 
-
-
     const handleAddTool = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -87,6 +130,67 @@ export default function AdminDashboard() {
         setNewTool({ title: '', id: '', description: '', category: 'PDF Tools' });
         fetchTools();
         setLoading(false);
+    };
+
+    const handleSaveBlog = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const payload = {
+            ...blogForm,
+            keywords: blogForm.keywords.split(',').map(k => k.trim())
+        };
+
+        try {
+            if (isEditingBlog && editingBlogId) {
+                await fetch(`/api/admin/blogs/${editingBlogId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } else {
+                await fetch('/api/admin/blogs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            }
+
+            // Reset form
+            setBlogForm({ title: '', slug: '', description: '', content: '', toolId: '', keywords: '', date: '' });
+            setIsEditingBlog(false);
+            setEditingBlogId(null);
+            fetchBlogs();
+            alert(isEditingBlog ? 'Blog updated!' : 'Blog created!');
+        } catch (error) {
+            alert('Failed to save blog');
+        }
+        setLoading(false);
+    };
+
+    const handleEditBlog = (blog: any) => {
+        setBlogForm({
+            title: blog.title,
+            slug: blog.slug,
+            description: blog.description,
+            content: blog.content,
+            toolId: blog.toolId,
+            keywords: Array.isArray(blog.keywords) ? blog.keywords.join(', ') : blog.keywords || '',
+            date: blog.date
+        });
+        setEditingBlogId(blog._id);
+        setIsEditingBlog(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleDeleteBlog = async (id: string) => {
+        if (!confirm('Are you sure you want to delete this blog post?')) return;
+        try {
+            await fetch(`/api/admin/blogs/${id}`, { method: 'DELETE' });
+            fetchBlogs();
+        } catch (error) {
+            alert('Failed to delete blog');
+        }
     };
 
     const exportData = () => {
@@ -101,9 +205,11 @@ export default function AdminDashboard() {
         link.click();
     };
 
+    const totalVisitors = analytics.filter(e => e.type === 'visitor').length;
+
     const stats = [
-        { label: 'Total Users', value: '12,450', icon: Users, color: '#4285f4' },
-        { label: 'Downloads', value: '45,670', icon: BarChart3, color: '#10b981' },
+        { label: 'Total Events', value: analytics.length.toString(), icon: BarChart3, color: '#10b981' },
+        { label: 'Unique Visitors (Est)', value: totalVisitors.toString(), icon: Users, color: '#4285f4' },
         { label: 'Active Tools', value: tools.length.toString(), icon: FileText, color: '#e5322d' },
     ];
 
@@ -111,52 +217,31 @@ export default function AdminDashboard() {
         <div className="flex min-h-screen" style={{ backgroundColor: 'var(--card)' }}>
             {/* Sidebar */}
             <aside style={{ width: '260px', borderRight: '1px solid var(--border)', padding: '2rem 1rem' }}>
-                <h2 style={{ marginBottom: '2rem', fontSize: '1.25rem' }}>Admin Panel</h2>
+                <h2 style={{ marginBottom: '2rem', fontSize: '1.25rem', fontWeight: 'bold' }}>Admin Panel</h2>
                 <nav className="flex flex-col gap-2">
-                    <button
-                        onClick={() => setActiveTab('dashboard')}
-                        className="btn"
-                        style={{
-                            justifyContent: 'flex-start',
-                            backgroundColor: activeTab === 'dashboard' ? 'var(--primary)10' : 'transparent',
-                            color: activeTab === 'dashboard' ? 'var(--primary)' : 'var(--foreground)'
-                        }}
-                    >
-                        <LayoutDashboard size={20} /> Dashboard
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('tools')}
-                        className="btn"
-                        style={{
-                            justifyContent: 'flex-start',
-                            backgroundColor: activeTab === 'tools' ? 'var(--primary)10' : 'transparent',
-                            color: activeTab === 'tools' ? 'var(--primary)' : 'var(--foreground)'
-                        }}
-                    >
-                        <Settings size={20} /> Manage Tools
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('analytics')}
-                        className="btn"
-                        style={{
-                            justifyContent: 'flex-start',
-                            backgroundColor: activeTab === 'analytics' ? 'var(--primary)10' : 'transparent',
-                            color: activeTab === 'analytics' ? 'var(--primary)' : 'var(--foreground)'
-                        }}
-                    >
-                        <BarChart3 size={20} /> User Intelligence
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('monetization')}
-                        className="btn"
-                        style={{
-                            justifyContent: 'flex-start',
-                            backgroundColor: activeTab === 'monetization' ? 'var(--primary)10' : 'transparent',
-                            color: activeTab === 'monetization' ? 'var(--primary)' : 'var(--foreground)'
-                        }}
-                    >
-                        <span style={{ fontSize: '1.25rem', marginRight: '0.5rem' }}>💰</span> Monetization
-                    </button>
+                    {[
+                        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+                        { id: 'tools', label: 'Manage Tools', icon: Settings },
+                        { id: 'blogs', label: 'Manage Blogs', icon: FileText },
+                        { id: 'analytics', label: 'User Intelligence', icon: BarChart3 },
+                        { id: 'monetization', label: 'Monetization', icon: null, emoji: '💰' }
+                    ].map((item) => (
+                        <button
+                            key={item.id}
+                            onClick={() => setActiveTab(item.id)}
+                            className="btn"
+                            style={{
+                                justifyContent: 'flex-start',
+                                backgroundColor: activeTab === item.id ? 'var(--primary)10' : 'transparent',
+                                color: activeTab === item.id ? 'var(--primary)' : 'var(--foreground)',
+                                fontWeight: activeTab === item.id ? 600 : 400
+                            }}
+                        >
+                            {item.icon && <item.icon size={20} />}
+                            {item.emoji && <span style={{ fontSize: '1.25rem', marginRight: '0.5rem' }}>{item.emoji}</span>}
+                            {item.label}
+                        </button>
+                    ))}
                 </nav>
             </aside>
 
@@ -177,6 +262,32 @@ export default function AdminDashboard() {
                                     </div>
                                 </div>
                             ))}
+                        </div>
+
+                        {/* Recent Visitor Chart Placeholder */}
+                        <div className="card">
+                            <h3 className="mb-4 text-lg font-bold">Recent Traffic Trend</h3>
+                            {visitorStats.length > 0 ? (
+                                <div className="flex items-end gap-2 h-40">
+                                    {visitorStats.map((stat, i) => (
+                                        <div key={i} className="flex-1 flex flex-col items-center">
+                                            <div
+                                                style={{
+                                                    width: '100%',
+                                                    height: `${Math.max(stat.count * 5, 10)}%`, // Simple scaling
+                                                    backgroundColor: 'var(--primary)',
+                                                    opacity: 0.7,
+                                                    borderRadius: '4px'
+                                                }}
+                                                title={`${stat.count} visitors`}
+                                            ></div>
+                                            <span className="text-xs text-muted-foreground mt-2 rotate-45 origin-left">{stat.date.slice(0, 5)}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-muted-foreground">No data available yet.</p>
+                            )}
                         </div>
                     </div>
                 )}
@@ -244,6 +355,109 @@ export default function AdminDashboard() {
                     </div>
                 )}
 
+                {activeTab === 'blogs' && (
+                    <div>
+                        <div className="flex justify-between items-center mb-8">
+                            <h1 className="m-0">Manage Blog Posts</h1>
+                            {!isEditingBlog && (
+                                <button
+                                    onClick={() => { setIsEditingBlog(true); setEditingBlogId(null); }}
+                                    className="btn btn-primary flex items-center gap-2"
+                                >
+                                    <Plus size={18} /> New Post
+                                </button>
+                            )}
+                        </div>
+
+                        {isEditingBlog && (
+                            <div className="card mb-8 animate-in fade-in slide-in-from-top-4">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3>{editingBlogId ? 'Edit Post' : 'Create New Post'}</h3>
+                                    <button onClick={() => setIsEditingBlog(false)} className="btn text-muted-foreground"><X size={20} /></button>
+                                </div>
+                                <form onSubmit={handleSaveBlog} className="grid gap-4">
+                                    <div className="grid grid-2 gap-4">
+                                        <input
+                                            placeholder="Post Title"
+                                            className="p-2 border rounded"
+                                            value={blogForm.title}
+                                            onChange={e => setBlogForm({ ...blogForm, title: e.target.value })}
+                                            required
+                                        />
+                                        <input
+                                            placeholder="Slug (e.g., how-to-edit-pdf)"
+                                            className="p-2 border rounded"
+                                            value={blogForm.slug}
+                                            onChange={e => setBlogForm({ ...blogForm, slug: e.target.value })}
+                                            required
+                                        />
+                                    </div>
+                                    <input
+                                        placeholder="Description (Meta)"
+                                        className="p-2 border rounded w-full"
+                                        value={blogForm.description}
+                                        onChange={e => setBlogForm({ ...blogForm, description: e.target.value })}
+                                        required
+                                    />
+                                    <div className="grid grid-2 gap-4">
+                                        <input
+                                            placeholder="Related Tool ID (Optional)"
+                                            className="p-2 border rounded"
+                                            value={blogForm.toolId}
+                                            onChange={e => setBlogForm({ ...blogForm, toolId: e.target.value })}
+                                        />
+                                        <input
+                                            placeholder="Keywords (comma separated)"
+                                            className="p-2 border rounded"
+                                            value={blogForm.keywords}
+                                            onChange={e => setBlogForm({ ...blogForm, keywords: e.target.value })}
+                                        />
+                                    </div>
+                                    <textarea
+                                        placeholder="HTML Content (e.g., <h2>Intro</h2><p>...</p>)"
+                                        className="p-2 border rounded w-full font-mono text-sm min-h-[300px]"
+                                        value={blogForm.content}
+                                        onChange={e => setBlogForm({ ...blogForm, content: e.target.value })}
+                                        required
+                                    />
+                                    <div className="flex items-center gap-4">
+                                        <button type="submit" disabled={loading} className="btn btn-primary w-full">
+                                            {loading ? 'Saving...' : (editingBlogId ? 'Update Post' : 'Publish Post')}
+                                        </button>
+                                        <button type="button" onClick={() => setIsEditingBlog(false)} className="btn w-full bg-gray-100 text-gray-700">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        )}
+
+                        <div className="grid gap-4">
+                            {blogs.length === 0 ? (
+                                <div className="text-center p-8 text-muted-foreground bg-gray-50 rounded-lg">
+                                    No dynamic blog posts found in database.
+                                </div>
+                            ) : (
+                                blogs.map((blog) => (
+                                    <div key={blog._id} className="card flex justify-between items-start">
+                                        <div className="flex-1">
+                                            <h3 className="text-lg font-bold mb-1">{blog.title}</h3>
+                                            <p className="text-sm text-gray-500 mb-2">/{blog.slug} • {blog.date}</p>
+                                            <p className="text-sm text-gray-700 line-clamp-2">{blog.description}</p>
+                                        </div>
+                                        <div className="flex gap-2 ml-4">
+                                            <button onClick={() => handleEditBlog(blog)} className="btn p-2 text-blue-600 hover:bg-blue-50 rounded">
+                                                <Edit size={18} />
+                                            </button>
+                                            <button onClick={() => handleDeleteBlog(blog._id)} className="btn p-2 text-red-600 hover:bg-red-50 rounded">
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                )}
+
                 {activeTab === 'analytics' && (
                     <div>
                         <div className="flex justify-between items-center" style={{ marginBottom: '2rem' }}>
@@ -269,8 +483,8 @@ export default function AdminDashboard() {
                                                 <span style={{
                                                     padding: '0.25rem 0.5rem',
                                                     borderRadius: '4px',
-                                                    backgroundColor: event.type === 'search' ? '#3b82f620' : '#10b98120',
-                                                    color: event.type === 'search' ? '#3b82f6' : '#10b981',
+                                                    backgroundColor: event.type === 'visitor' ? '#8b5cf620' : (event.type === 'search' ? '#3b82f620' : '#10b98120'),
+                                                    color: event.type === 'visitor' ? '#8b5cf6' : (event.type === 'search' ? '#3b82f6' : '#10b981'),
                                                     fontSize: '0.75rem',
                                                     fontWeight: 600
                                                 }}>

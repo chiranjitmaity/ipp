@@ -2,9 +2,13 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BLOG_POSTS } from '@/data/blogs';
+import { BlogPost } from '@/data/blogs';
 
-export default function BlogIndexClient() {
+interface Props {
+    posts: BlogPost[];
+}
+
+export default function BlogIndexClient({ posts }: Props) {
     return (
         <div className="container" style={{ padding: '4rem 1.5rem' }}>
             <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
@@ -15,7 +19,7 @@ export default function BlogIndexClient() {
             </div>
 
             <div className="grid grid-3">
-                {BLOG_POSTS.map((post) => (
+                {posts.map((post) => (
                     <motion.div
                         key={post.slug}
                         initial={{ opacity: 0, y: 20 }}

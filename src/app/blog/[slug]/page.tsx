@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { BLOG_POSTS } from '@/data/blogs';
+import { BlogService } from '@/lib/blog-service';
 import { TOOLS } from '@/data/tools';
 import BlogClient from '@/components/blog/BlogClient';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
-    const post = BLOG_POSTS.find(p => p.slug === slug);
+    const post = await BlogService.getBlogBySlug(slug);
 
     if (!post) {
         return {
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
     const { slug } = await params;
-    const post = BLOG_POSTS.find(p => p.slug === slug);
+    const post = await BlogService.getBlogBySlug(slug);
     const tool = TOOLS.find(t => t.id === post?.toolId);
 
     if (!post) {

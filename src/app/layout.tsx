@@ -10,6 +10,7 @@ import { AdSpace } from "@/components/ui/AdSpace";
 
 import { AuthContext } from "@/components/layout/AuthContext";
 import clientPromise from "@/lib/mongodb";
+import VisitorTracker from '@/components/VisitorTracker';
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
@@ -63,6 +64,7 @@ export default async function RootLayout({
         )}
       </head>
       <body className={inter.className}>
+        <VisitorTracker />
         <AuthContext>
           <ThemeProvider>
             <div className="flex flex-col min-h-screen">
