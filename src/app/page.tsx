@@ -20,20 +20,32 @@ export default function Home() {
       {/* Hero Section */}
       <section className="hero" style={{
         textAlign: 'center',
-        padding: '6rem 0',
-        background: 'linear-gradient(180deg, var(--background) 0%, var(--card) 100%)',
+        padding: '8rem 0 6rem',
+        position: 'relative',
+        overflow: 'hidden',
         borderBottom: '1px solid var(--border)'
       }}>
-        <div className="container">
-          <h1 style={{ fontSize: '3.5rem', marginBottom: '1.5rem', maxWidth: '800px', margin: '0 auto 1.5rem' }}>
-            Every tool you need to work with <span style={{ color: 'var(--primary)' }}>PDFs</span>, in one place.
+        {/* Decorative background blur blobs */}
+        <div style={{ position: 'absolute', top: '-10%', left: '-5%', width: '40%', height: '50%', background: 'var(--primary)', filter: 'blur(150px)', opacity: 0.1, zIndex: 0, borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', bottom: '-10%', right: '-5%', width: '40%', height: '50%', background: 'var(--secondary)', filter: 'blur(150px)', opacity: 0.1, zIndex: 0, borderRadius: '50%' }} />
+
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+          <h1 style={{ fontSize: '4rem', marginBottom: '1.5rem', maxWidth: '850px', margin: '0 auto 1.5rem', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+            Every tool you need to work with <br className="hidden md:block" />
+            <span style={{
+              background: 'linear-gradient(135deg, var(--primary) 0%, #ff8e53 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              color: 'transparent'
+            }}>PDFs & Documents</span>.
           </h1>
-          <p style={{ fontSize: '1.25rem', color: 'var(--muted)', marginBottom: '3rem', maxWidth: '600px', margin: '0 auto 3rem' }}>
-            Free, easy to use, and secure online tools to merge, split, compress, and convert your files.
+          <p style={{ fontSize: '1.25rem', color: 'var(--muted)', marginBottom: '3rem', maxWidth: '600px', margin: '0 auto 3rem', lineHeight: 1.6 }}>
+            Free, easy to use, and secure online tools to merge, split, compress, and convert your files in seconds.
           </p>
 
           <div style={{ position: 'relative', maxWidth: '600px', margin: '0 auto' }}>
-            <Search size={24} style={{ position: 'absolute', left: '1.5rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)' }} />
+            <Search size={22} style={{ position: 'absolute', left: '1.5rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)', zIndex: 2 }} />
             <input
               type="text"
               placeholder="Search for a tool (e.g., 'Merge PDF')..."
@@ -41,14 +53,18 @@ export default function Home() {
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: '100%',
-                padding: '1.25rem 1.5rem 1.25rem 4rem',
+                padding: '1.25rem 1.5rem 1.25rem 3.5rem',
                 fontSize: '1.125rem',
                 borderRadius: '50px',
-                border: '1px solid var(--border)',
-                boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
-                backgroundColor: 'var(--background)',
-                color: 'var(--foreground)'
+                border: '2px solid transparent',
+                boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04), 0 0 40px rgba(0,0,0,0.05)',
+                backgroundColor: 'var(--card)',
+                color: 'var(--foreground)',
+                outline: 'none',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
               }}
+              onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(229, 50, 45, 0.15), 0 20px 25px -5px rgb(0 0 0 / 0.1)' }}
+              onBlur={(e) => { e.target.style.borderColor = 'transparent'; e.target.style.boxShadow = '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04), 0 0 40px rgba(0,0,0,0.05)' }}
             />
           </div>
         </div>

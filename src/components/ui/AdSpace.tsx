@@ -18,14 +18,16 @@ export const AdSpace = ({ type }: AdSpaceProps) => {
             style={{
                 ...styles[type],
                 backgroundColor: 'var(--card)',
-                border: '1px dashed var(--border)',
+                border: '1px dashed var(--muted-foreground)',
+                boxShadow: 'inset 0 2px 10px rgba(0, 0, 0, 0.05)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'var(--muted)',
                 fontSize: '0.75rem',
                 borderRadius: 'var(--radius)',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                backdropFilter: 'blur(5px)'
             }}
         >
             <div style={{ textAlign: 'center' }}>
