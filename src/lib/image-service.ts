@@ -17,6 +17,7 @@ export interface ImageProcessingOptions {
     flipHorizontal?: boolean;
     flipVertical?: boolean;
     wmType?: 'text' | 'image';
+    wmText?: string;
     wmOpacity?: number;
     wmPosition?: string;
     wmSize?: number;
