@@ -19,7 +19,6 @@ export interface ProcessingOptions {
     footerText?: string;
     headerFontSize?: number;
     headerMargin?: number;
-    headerMargin?: number;
     watermarkText?: string;
     password?: string;
 }
@@ -495,11 +494,11 @@ export class PDFService {
 
                 let pdfDoc: PDFDocument;
                 try {
-                    // Start by trying to load without password, or with provided password
-                    // If the file is encrypted, loading without password might fail or return restricted doc.
-                    // pdf-lib load options: { password: ... }
+                    // Start by trying to load without password, or ignoring encryption
                     if (options.password) {
-                        pdfDoc = await PDFDocument.load(primaryBuffer, { password: options.password });
+                        // pdf-lib does not support providing a password directly in LoadOptions
+                        // We will attempt to load it with ignoreEncryption
+                        pdfDoc = await PDFDocument.load(primaryBuffer, { ignoreEncryption: true });
                     } else {
                         pdfDoc = await PDFDocument.load(primaryBuffer, { ignoreEncryption: true });
                     }

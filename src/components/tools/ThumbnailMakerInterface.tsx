@@ -122,14 +122,14 @@ const ToolbarInput = ({ icon, value, onChange, type = 'number', min, max }: any)
 );
 
 // --- Main Interface ---
-export const ThumbnailMakerInterface = () => {
+export const ThumbnailMakerInterface = ({ toolId, title, description }: { toolId: string, title: string, description: string }) => {
     // Canvas State
     const [scale, setScale] = useState(1);
     const [layers, setLayers] = useState<Layer[]>([
         { id: '1', type: 'text', name: 'Start', visible: true, locked: false, x: 300, y: 280, width: 680, height: 120, rotation: 0, opacity: 1, text: 'CREATE AMAZING\nTHUMBNAILS', fontSize: 80, fontFamily: 'Impact', fontWeight: 'bold', color: '#ffffff', backgroundColor: 'transparent', textAlign: 'center', shadowColor: '#000000', shadowBlur: 10, shadowOffsetX: 0, shadowOffsetY: 5, strokeColor: '#000000', strokeWidth: 0, fontStyle: 'normal', textDecoration: 'none' } as TextLayer
     ]);
     const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<'templates' | 'text' | 'images' | 'shapes'>('templates');
+    const [activeTab, setActiveTab] = useState<'templates' | 'text' | 'images' | 'shapes' | 'background'>('templates');
     const [bgImage, setBgImage] = useState<string | null>(null);
     const [bgColor, setBgColor] = useState('#222');
 
