@@ -54,10 +54,11 @@ export const Header = () => {
             <div className="container flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-2" style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--primary)' }}>
                     <FileText size={32} />
-                    <span style={{ color: 'var(--foreground)' }}>ilovepdftools</span>
+                    <span style={{ color: 'var(--foreground)' }}>PDF FILE Converter</span>
                 </Link>
 
                 <nav className="desktop-nav flex items-center gap-8">
+                    <Link href="/" style={{ fontWeight: 600 }}>All Tools</Link>
                     <Link href="/tools/pdf" style={{ fontWeight: 600 }}>PDF Tools</Link>
                     <Link href="/tools/image" style={{ fontWeight: 600 }}>Image Tools</Link>
                     <Link href="/tools/document" style={{ fontWeight: 600 }}>Document Tools</Link>
@@ -182,7 +183,69 @@ export const Header = () => {
                             overflowY: 'auto'
                         }}
                     >
+                        {/* Mobile Search */}
+                        <div style={{ position: 'relative', width: '100%' }}>
+                            <Search size={20} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)' }} />
+                            <input
+                                type="text"
+                                placeholder="Search tools..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                style={{
+                                    padding: '0.75rem 1rem 0.75rem 2.5rem',
+                                    borderRadius: '12px',
+                                    border: '1px solid var(--border)',
+                                    backgroundColor: 'var(--card)',
+                                    color: 'var(--foreground)',
+                                    width: '100%',
+                                    fontSize: '1rem'
+                                }}
+                            />
+                            {/* Mobile Search Results */}
+                            {searchQuery && (
+                                <div style={{
+                                    marginTop: '0.5rem',
+                                    backgroundColor: 'var(--card)',
+                                    border: '1px solid var(--border)',
+                                    borderRadius: 'var(--radius)',
+                                    overflow: 'hidden'
+                                }}>
+                                    {searchResults.length > 0 ? (
+                                        <div className="flex flex-col" style={{ maxHeight: '250px', overflowY: 'auto' }}>
+                                            {searchResults.map(tool => (
+                                                <Link
+                                                    key={tool.id}
+                                                    href={tool.href}
+                                                    onClick={() => {
+                                                        setIsMenuOpen(false);
+                                                        setSearchQuery('');
+                                                    }}
+                                                    style={{
+                                                        padding: '0.75rem 1rem',
+                                                        borderBottom: '1px solid var(--border)',
+                                                        textDecoration: 'none',
+                                                        color: 'var(--foreground)',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '0.75rem'
+                                                    }}
+                                                >
+                                                    <tool.icon size={18} />
+                                                    <span>{tool.title}</span>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--muted)' }}>
+                                            No tools found
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
                         <nav className="flex flex-col gap-4">
+                            <Link href="/" onClick={() => setIsMenuOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 600 }}>All Tools</Link>
                             <Link href="/tools/pdf" onClick={() => setIsMenuOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 600 }}>PDF Tools</Link>
                             <Link href="/tools/image" onClick={() => setIsMenuOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 600 }}>Image Tools</Link>
                             <Link href="/tools/document" onClick={() => setIsMenuOpen(false)} style={{ fontSize: '1.25rem', fontWeight: 600 }}>Document Tools</Link>

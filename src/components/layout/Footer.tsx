@@ -11,7 +11,7 @@ export const Footer = () => {
                     <div className="flex flex-col gap-4">
                         <Link href="/" className="flex items-center gap-2" style={{ fontWeight: 800, fontSize: '1.25rem', color: 'var(--primary)' }}>
                             <FileText size={24} />
-                            <span style={{ color: 'var(--foreground)' }}>ilovepdftools</span>
+                            <span style={{ color: 'var(--foreground)' }}>PDF FILE Converter</span>
                         </Link>
                         <p style={{ color: 'var(--muted)', fontSize: '0.875rem' }}>
                             Your every PDF and file conversion tool in one place. Fast, easy, and secure.

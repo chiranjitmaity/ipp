@@ -10,6 +10,18 @@ if (typeof global.DOMMatrix === 'undefined') {
 
 export interface ProcessingOptions {
     targetSize?: number; // Target size in MB
+    pageNumberPosition?: string;
+    pageNumberStart?: number;
+    pageNumberFormat?: string;
+    pageNumberSize?: number;
+    pageNumberMargin?: number;
+    headerText?: string;
+    footerText?: string;
+    headerFontSize?: number;
+    headerMargin?: number;
+    headerMargin?: number;
+    watermarkText?: string;
+    password?: string;
 }
 
 export class PDFService {
@@ -191,6 +203,7 @@ export class PDFService {
                 break;
             }
 
+            case 'screenshot-to-pdf':
             case 'jpg-to-pdf': {
                 const imgPdfDoc = await PDFDocument.create();
                 for (const buf of buffers) {
@@ -333,65 +346,131 @@ export class PDFService {
                 } catch (err) {
                     console.error("Standard PDF repair failed, attempting content recovery:", err);
 
-                    // 2. Fallback: Content Recovery (Text)
+                    // 2. Fallback: Content Recovery (Text & Images)
                     // If proper repair fails, we try to scrape readable text and put it in a new PDF.
                     try {
-                        const pdfParse = (await import('pdf-parse')).default || await import('pdf-parse');
-                        const parsedData = await pdfParse(primaryBuffer);
-                        const extractedText = parsedData.text || '';
-
-                        if (!extractedText.trim()) {
-                            throw new Error("No recoverable text found in corrupted PDF.");
-                        }
-
                         const recoveryDoc = await PDFDocument.create();
                         const font = await recoveryDoc.embedFont(StandardFonts.Helvetica);
+                        const boldFont = await recoveryDoc.embedFont(StandardFonts.HelveticaBold);
                         const fontSize = 11;
                         const margin = 50;
 
                         let page = recoveryDoc.addPage();
                         const { width, height } = page.getSize();
                         let y = height - margin;
+                        let contentRecovered = false;
 
                         // Add a disclaimer header
                         page.drawText("RECOVERED CONTENT (Original file was corrupted)", {
                             x: margin,
                             y: y,
                             size: 14,
-                            font: await recoveryDoc.embedFont(StandardFonts.HelveticaBold),
+                            font: boldFont,
                             color: rgb(1, 0, 0)
                         });
                         y -= 30;
 
-                        // Simple text wrapping (reusing logic from word-to-pdf if possible, or simplified here)
-                        const lines = extractedText.split('\n');
-                        for (const line of lines) {
-                            // Sanitize line
-                            const cleanLine = line.replace(/[^\x20-\x7E\s]/g, '?').trim(); // Basic ASCII filter for safety
-                            if (!cleanLine) continue;
+                        // --- Text Recovery ---
+                        try {
+                            const pdfParse = (await import('pdf-parse')).default || await import('pdf-parse');
+                            const parsedData = await pdfParse(primaryBuffer);
+                            const extractedText = parsedData.text || '';
 
-                            if (y < margin) {
-                                page = recoveryDoc.addPage();
-                                y = height - margin;
+                            if (extractedText.trim()) {
+                                page.drawText("Recovered Text:", { x: margin, y, size: 12, font: boldFont });
+                                y -= 20;
+
+                                const lines = extractedText.split('\n');
+                                for (const line of lines) {
+                                    const cleanLine = line.replace(/[^\x20-\x7E\s]/g, '?').trim();
+                                    if (!cleanLine) continue;
+
+                                    if (y < margin) {
+                                        page = recoveryDoc.addPage();
+                                        y = height - margin;
+                                    }
+
+                                    const textWidth = font.widthOfTextAtSize(cleanLine, fontSize);
+                                    if (textWidth > width - margin * 2) {
+                                        page.drawText(cleanLine.substring(0, 100) + '...', { x: margin, y, size: fontSize, font });
+                                    } else {
+                                        page.drawText(cleanLine, { x: margin, y, size: fontSize, font });
+                                    }
+                                    y -= 14;
+                                }
+                                contentRecovered = true;
+                                y -= 20; // Space before images
+                            }
+                        } catch (textErr) {
+                            console.error("Text recovery failed:", textErr);
+                        }
+
+                        // --- Image Recovery (Raw Buffer Scan) ---
+                        try {
+                            // Simple scanner for JPEG markers (FF D8 ... FF D9)
+                            const foundImages: Buffer[] = [];
+                            let start = -1;
+                            for (let i = 0; i < primaryBuffer.length - 1; i++) {
+                                if (primaryBuffer[i] === 0xFF && primaryBuffer[i + 1] === 0xD8) {
+                                    start = i;
+                                }
+                                if (start !== -1 && primaryBuffer[i] === 0xFF && primaryBuffer[i + 1] === 0xD9) {
+                                    const end = i + 2;
+                                    // Sanity check: JPEG usually larger than 100 bytes
+                                    if (end - start > 100) {
+                                        foundImages.push(primaryBuffer.subarray(start, end));
+                                    }
+                                    start = -1;
+                                }
                             }
 
-                            // Check width (simplified wrap)
-                            const textWidth = font.widthOfTextAtSize(cleanLine, fontSize);
-                            if (textWidth > width - margin * 2) {
-                                // Cut off for now or simple split? Let's just draw it; pdf-lib doesn't auto-wrap.
-                                // For robust repair, we just dump text. 
-                                page.drawText(cleanLine.substring(0, 100) + '...', { x: margin, y, size: fontSize, font });
-                            } else {
-                                page.drawText(cleanLine, { x: margin, y, size: fontSize, font });
+                            if (foundImages.length > 0) {
+                                if (y < margin + 50) {
+                                    page = recoveryDoc.addPage();
+                                    y = height - margin;
+                                }
+                                page.drawText(`Recovered Images (${foundImages.length}):`, { x: margin, y, size: 12, font: boldFont });
+                                y -= 20;
+
+                                for (const imgBuf of foundImages) {
+                                    try {
+                                        const img = await recoveryDoc.embedJpg(imgBuf);
+                                        const imgDims = img.scale(0.5); // Scale down to fit
+
+                                        // Check if it fits on page
+                                        if (y - imgDims.height < margin) {
+                                            page = recoveryDoc.addPage();
+                                            y = height - margin;
+                                        }
+
+                                        page.drawImage(img, {
+                                            x: margin,
+                                            y: y - imgDims.height,
+                                            width: imgDims.width,
+                                            height: imgDims.height,
+                                        });
+                                        y -= (imgDims.height + 20);
+                                        contentRecovered = true;
+                                    } catch (embedErr) {
+                                        // Invalid image data
+                                        continue;
+                                    }
+                                }
                             }
-                            y -= 14;
+                        } catch (imgErr) {
+                            console.error("Image recovery failed:", imgErr);
+                        }
+
+                        if (!contentRecovered) {
+                            throw new Error("No text or images could be recovered.");
                         }
 
                         outputBuffer = Buffer.from(await recoveryDoc.save());
                         filename = `recovered_${Date.now()}.pdf`;
 
                     } catch (recoveryErr) {
-                        console.error("Recovery also failed:", recoveryErr);
+                        console.error("Recovery failed or incomplete:", recoveryErr);
+                        // If completely failed, just rethrow or return error PDF
                         throw new Error("Unable to repair or recover content from this PDF.");
                     }
                 }
@@ -404,6 +483,36 @@ export class PDFService {
                 form.flatten();
                 outputBuffer = Buffer.from(await pdfDoc.save());
                 filename = `flattened_${Date.now()}.pdf`;
+                break;
+            }
+
+            case 'remove-pdf-permission': {
+                // Load the encrypted PDF using the provided password
+                // Note: pdf-lib (and underlying pdf.js) might need the password to open.
+                // If it's just owner password protected (but readable), we might not need it for reading,
+                // but to "unlock" fully regarding permissions, simply saving it might do the trick 
+                // IF we have the right credentials.
+
+                let pdfDoc: PDFDocument;
+                try {
+                    // Start by trying to load without password, or with provided password
+                    // If the file is encrypted, loading without password might fail or return restricted doc.
+                    // pdf-lib load options: { password: ... }
+                    if (options.password) {
+                        pdfDoc = await PDFDocument.load(primaryBuffer, { password: options.password });
+                    } else {
+                        pdfDoc = await PDFDocument.load(primaryBuffer, { ignoreEncryption: true });
+                    }
+                } catch (e) {
+                    // If failed and no password provided, try again assuming user might have forgotten it but it's readable?
+                    // Actually if it throws, it means it REQUIRED a password.
+                    throw new Error("Password required or incorrect to open this PDF.");
+                }
+
+                // Saving a loaded PDFDocument removes encryption by default in pdf-lib
+                // unless you explicitly call encrypt() on it.
+                outputBuffer = Buffer.from(await pdfDoc.save());
+                filename = `unlocked_${Date.now()}.pdf`;
                 break;
             }
 

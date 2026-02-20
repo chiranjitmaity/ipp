@@ -7,7 +7,7 @@ import {
     ArrowUpFromLine, Stamp, PenTool, Lock, Unlock, ShieldCheck,
     Smartphone, QrCode, Link, Type, Mic, Speaker,
     Code, Database, Bot, GraduationCap, Calculator, Receipt,
-    FileJson, Binary, Globe, Palette as ColorPalette, Key
+    FileJson, Binary, Globe, Palette as ColorPalette, Key, RefreshCw
 } from 'lucide-react';
 
 export const TOOL_CATEGORIES = {
@@ -364,12 +364,65 @@ export const TOOLS: Tool[] = [
         id: 'screenshot-to-pdf',
         title: 'Screenshot to PDF',
         description: 'Convert screenshots into a single PDF document.',
-        category: TOOL_CATEGORIES.IMAGE,
+        category: TOOL_CATEGORIES.PDF,
         icon: FileText,
         href: '/tools/screenshot-to-pdf',
         accept: 'image/*',
     },
-
+    {
+        id: 'rotate-image',
+        title: 'Rotate & Flip',
+        description: 'Rotate images 90°, 180° or flip them vertically/horizontally.',
+        category: TOOL_CATEGORIES.IMAGE,
+        icon: RefreshCw,
+        href: '/tools/rotate-image',
+        accept: 'image/*',
+    },
+    {
+        id: 'image-metadata',
+        title: 'Image Metadata',
+        description: 'View and remove EXIF data from your photos.',
+        category: TOOL_CATEGORIES.IMAGE,
+        icon: FileJson,
+        href: '/tools/image-metadata',
+        accept: 'image/jpeg,image/tiff',
+    },
+    {
+        id: 'color-filter-image',
+        title: 'Color & Filter',
+        description: 'Apply grayscale, B&W, and adjust brightness/contrast.',
+        category: TOOL_CATEGORIES.IMAGE,
+        icon: Palette,
+        href: '/tools/color-filter-image',
+        accept: 'image/*',
+    },
+    {
+        id: 'gif-maker',
+        title: 'GIF Maker',
+        description: 'Create animated GIFs from multiple images.',
+        category: TOOL_CATEGORIES.IMAGE,
+        icon: ImageIcon, // Use a generic icon if Film not available or import it
+        href: '/tools/gif-maker',
+        accept: 'image/*',
+    },
+    {
+        id: 'bulk-image-processor',
+        title: 'Bulk Image Tools',
+        description: 'Process multiple images at once (Resize, Convert, etc).',
+        category: TOOL_CATEGORIES.IMAGE,
+        icon: Layers,
+        href: '/tools/bulk-image-processor',
+        accept: 'image/*',
+    },
+    {
+        id: 'convert-image-format',
+        title: 'Image Converter',
+        description: 'Convert between JPG, PNG, WebP, TIFF, BMP, and more.',
+        category: TOOL_CATEGORIES.IMAGE,
+        icon: RefreshCw,
+        href: '/tools/convert-image-format',
+        accept: 'image/*',
+    },
     // --- Document Tools ---
     {
         id: 'docx-to-doc',

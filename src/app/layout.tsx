@@ -34,7 +34,7 @@ async function getSettings(): Promise<Settings> {
 }
 
 export const metadata: Metadata = {
-  title: "pdffileconverter | Free Online PDF & File Converter",
+  title: "PDF FILE Converter | Free Online PDF & File Converter",
   description: "Every tool you need to use PDFs, images, and documents in one place. Merge, split, compress, convert, rotate, unlock and watermark PDFs with just a few clicks.",
   keywords: "pdf tools, file converter, merge pdf, split pdf, compress pdf, pdf to word, jpg to pdf",
 };
@@ -49,7 +49,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <SchemaMarkup />
+
         {/* AdSense Script */}
         {/* AdSense Script */}
         <script
@@ -90,6 +90,7 @@ export default async function RootLayout({
             </div>
           </ThemeProvider>
         </AuthContext>
+        <SchemaMarkup />
       </body>
     </html>
   );
