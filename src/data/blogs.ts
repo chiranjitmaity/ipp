@@ -1,3 +1,11 @@
+import { contentExtractImages } from './blog-content/extract-images';
+import { contentJpgToPdf } from './blog-content/jpg-to-pdf';
+import { contentCompressPdf } from './blog-content/compress-pdf';
+import { contentSplitPdf } from './blog-content/split-pdf';
+import { contentPdfToWord } from './blog-content/pdf-to-word';
+import { contentWordToPdf } from './blog-content/word-to-pdf';
+import { contentMergePdf } from './blog-content/merge-pdf';
+
 export interface BlogPost {
     slug: string;
     title: string;
@@ -8,6 +16,7 @@ export interface BlogPost {
     icon: string;
     toolId: string;
     keywords: string[];
+    thumbnail?: string;
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -17,68 +26,11 @@ export const BLOG_POSTS: BlogPost[] = [
         title: 'The Ultimate Guide: How to Convert PDF to Editable Word Documents (2026)',
         description: 'Learn how to transform your PDF files into editable Microsoft Word documents while preserving formatting. A complete guide for students and professionals.',
         date: 'February 19, 2026',
-        readTime: '8 min read',
+        readTime: '15 min read',
         icon: '📄',
+        thumbnail: '/blog-thumbnails/pdf-to-word.png',
         keywords: ['pdf to word', 'convert pdf to docx', 'online pdf converter', 'pdf editor', 'free pdf tools', 'editable word document'],
-        content: `
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
-                <div class="flex items-center justify-between flex-wrap gap-4">
-                    <div>
-                        <h3 class="text-lg font-bold text-blue-900 m-0">Ready to try this tool?</h3>
-                        <p class="text-sm text-blue-700 m-0">Fast, free, and secure.</p>
-                    </div>
-                    <a href="/tools/pdf-to-word" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors">
-                        Start Now &rarr;
-                    </a>
-                </div>
-            </div>
-            <h2>Introduction</h2>
-            <p>In today's fast-paced digital world, the Portable Document Format (PDF) is the gold standard for sharing documents. It ensures that your resume, report, or contract looks exactly the same on every device. However, this strength is also its greatest weakness: PDFs are notoriously difficult to edit.</p>
-            <p>We've all been there. You receive a PDF form that you need to fill out, or a report where you need to change just one paragraph. You try to copy and paste the text, but the formatting goes haywire. Creating the document from scratch in Microsoft Word seems like the only nightmare option.</p>
-            <p>Fortunately, technology has evolved. You no longer need expensive software like Adobe Acrobat Pro to make these changes. With our <strong>PDF to Word converter</strong>, you can transform static PDF files into fully editable DOCX documents in seconds—all for free.</p>
-            
-            <h2>What is a PDF to Word Converter?</h2>
-            <p>A PDF to Word converter is a specialized tool designed to read the content of a PDF file—including text, images, tables, and layout structures—and reconstruct it within a Microsoft Word document format (.docx). </p>
-            <p>Unlike simple copy-pasting, a high-quality converter uses strict algorithms to ensure that:</p>
-            <ul>
-                <li><strong>Fonts match the original:</strong> It detects the font used in the PDF and maps it to the closest available system font.</li>
-                <li><strong>Tables remain tables:</strong> Instead of turning into a mess of tab-spaced text, your data stays in neat rows and columns.</li>
-                <li><strong>Images stay in place:</strong> Graphics are extracted and placed in their correct positions relative to the text.</li>
-            </ul>
-
-            <h2>Step-by-Step Guide: How to Convert PDF to Word</h2>
-            <p>Using our tool is incredibly simple. We believe in a "click and go" philosophy. Here is exactly how to do it:</p>
-            
-            <h3>Step 1: Upload Your File</h3>
-            <p>Navigate to the <a href="/tools/pdf-to-word">PDF to Word tool</a> on our website. You will see a large upload area. You can either:</p>
-            <ul>
-                <li>Click the "Select PDF file" button to browse your computer.</li>
-                <li>Drag and drop your PDF directly from your desktop into the browser window.</li>
-            </ul>
-            
-            <h3>Step 2: Let the AI Process Your Document</h3>
-            <p>Once uploaded, our servers take over. The conversion process is handled in-memory for maximum security. The engine analyzes your document structure. This usually takes only a few seconds, depending on the file size.</p>
-            
-            <h3>Step 3: Download Your Word Doc</h3>
-            <p>When the conversion is complete, a "Download Word" button will appear. Click it to save the .docx file to your device. You can now open this file in Microsoft Word, Google Docs, or LibreOffice and edit it just like any other document.</p>
-
-            <h2>Why Choose Online Conversion Over Desktop Software?</h2>
-            <p><strong>1. Cost-Effective:</strong> Most desktop PDF editors require a hefty monthly subscription. Our tool is free to use.</p>
-            <p><strong>2. Accessibility:</strong> You don't need to install anything. Whether you are on a Windows PC at work, a Mac at home, or even an iPad or Android phone on the go, the tool works directly in your web browser.</p>
-            <p><strong>3. Speed:</strong> Installing software takes time. Uploading a file takes seconds.</p>
-
-            <h2>Common Use Cases</h2>
-            <p><strong>Students:</strong> Extracting quotes and text from research papers or textbooks saved as PDFs for your thesis.</p>
-            <p><strong>Professionals:</strong> Updating old contracts or agreements where the original source file has been lost.</p>
-            <p><strong>Recruiters:</strong> Parsing resumes sent in PDF format to add notes or copy details into an ATS system.</p>
-
-            <h2>Troubleshooting Common Issues</h2>
-            <p><strong>"The text is still an image":</strong> This happens if your PDF was created by scanning a physical paper without OCR (Optical Character Recognition). In this case, standard converters treat the page like a photo.</p>
-            <p><strong>"Formatting looks slightly different":</strong> While we aim for 100% accuracy, complex layouts with floating elements can sometimes shift. Microsoft Word and PDF handle "layers" differently. Usually, a quick manual adjustment in Word fixes this.</p>
-
-            <h2>Conclusion</h2>
-            <p>Converting PDF to Word doesn't have to be a headache. With the right tools, it is a fast, free, and secure process. Bookmark our site for the next time you need to make a quick edit to a "locked" document.</p>
-        `
+        content: contentPdfToWord
     },
     {
         slug: 'create-pdf-from-word-documents',
@@ -86,61 +38,11 @@ export const BLOG_POSTS: BlogPost[] = [
         title: 'How to Convert Word to PDF: The Complete Guide (2026)',
         description: 'Convert your DOCX files to professional PDF documents in seconds. Ensure your formatting stays locked on any device.',
         date: 'February 19, 2026',
-        readTime: '7 min read',
+        readTime: '16 min read',
         icon: '📝',
+        thumbnail: '/blog-thumbnails/word-to-pdf.png',
         keywords: ['word to pdf', 'convert docx to pdf', 'create pdf', 'online converter', 'save as pdf', 'doc to pdf'],
-        content: `
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
-                <div class="flex items-center justify-between flex-wrap gap-4">
-                    <div>
-                        <h3 class="text-lg font-bold text-blue-900 m-0">Ready to try this tool?</h3>
-                        <p class="text-sm text-blue-700 m-0">Fast, free, and secure.</p>
-                    </div>
-                    <a href="/tools/word-to-pdf" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors">
-                        Start Now &rarr;
-                    </a>
-                </div>
-            </div>
-            <h2>Introduction</h2>
-            <p>You've spent hours perfecting your resume, report, or ebook in Microsoft Word. You've chosen the perfect fonts, aligned the images just right, and set up your margins. You hit send. But when the recipient opens it on their phone, everything is broken. The images have jumped to the next page, and the font has been replaced by a default system font.</p>
-            <p>This is the nightmare of sharing editable document formats like DOC or DOCX. They are "fluid" formats, meaning they re-flow based on the printer settings and screen size of the device viewing them.</p>
-            <p>The solution? <strong>Convert your Word document to PDF</strong> before sharing. PDF (Portable Document Format) is a "fixed" format. It's digital paper. What you see is exactly what everyone else sees.</p>
-
-            <h2>Why Convert Word to PDF?</h2>
-            <p>Beyond maintaining formatting, there are several reasons to use PDF:</p>
-            <ul>
-                <li><strong>Universal Compatibility:</strong> PDFs can be opened on any device (Windows, Mac, Linux, iOS, Android) without needing proprietary software like Microsoft Office. browser.</li>
-                <li><strong>Security:</strong> PDFs are harder to casually edit than Word docs, preventing accidental changes to your content.</li>
-                <li><strong>Smaller File Size:</strong> Often, a PDF version of a document is lighter than a Word doc containing high-res images, making it easier to email.</li>
-            </ul>
-
-            <h2>How to Use our Word to PDF Tool</h2>
-            <p>While Microsoft Word has a "Save as PDF" feature built-in, you might not always have access to Word (e.g., if you're on a mobile device or using a public computer). Our online tool fills that gap.</p>
-            
-            <h3>Step 1: Select Your File</h3>
-            <p>Go to the <a href="/tools/word-to-pdf">Word to PDF tool</a>. Click the upload button and choose your .doc or .docx file.</p>
-            
-            <h3>Step 2: Automatic Conversion</h3>
-            <p>Our intelligent engine reads the Word document and "prints" it digitally to a PDF container. This process preserves:</p>
-            <ul>
-                <li>Headings and Text Styles</li>
-                <li>Images and charts</li>
-                <li>Page breaks and margins</li>
-                <li>Hyperlinks</li>
-            </ul>
-            
-            <h3>Step 3: Save and Share</h3>
-            <p>Download your new PDF. You can now confidently email this file to your boss, professor, or client, knowing it will look professional and pristine.</p>
-
-            <h2>Best Practices for Word to PDF Conversion</h2>
-            <p>To get the best results, keep these tips in mind before uploading:</p>
-            <p><strong>Check your margins:</strong> Ensure your content isn't too close to the edge of the page, as PDF printers usually enforce a minimum margin.</p>
-            <p><strong>Compress images first:</strong> If your Word doc is huge (e.g., 50MB), try to compress the images inside Word first to make the upload faster.</p>
-            <p><strong>Use standard fonts:</strong> While PDFs embed fonts, using standard ones like Arial, Times New Roman, or Open Sans ensures maximum compatibility if the embedding fails.</p>
-
-            <h2>Conclusion</h2>
-            <p>The PDF format is the professional standard for a reason. By converting your Word documents to PDF, you elevate the perception of your work. It shows you care about presentation and accessibility. Use our free tool whenever you need a quick, reliable conversion.</p>
-        `
+        content: contentWordToPdf
     },
     {
         slug: 'how-to-merge-multiple-pdf-files',
@@ -192,48 +94,16 @@ export const BLOG_POSTS: BlogPost[] = [
         `
     },
     {
-        slug: 'splitting-pdf-pages-easily',
-        toolId: 'split-pdf',
-        title: 'How to Split PDF Files: Extract Pages Instantly (2026)',
-        description: 'Learn how to split a large PDF into smaller files or extract just the specific pages you need for your work.',
+        slug: 'how-to-merge-multiple-pdf-files',
+        toolId: 'merge-pdf',
+        title: 'The Ultimate Guide to Merging Process: Combine Multiple PDFs (2026)',
+        description: 'Need to join several PDFs? Follow this detailed guide to merge your documents efficiently and securely.',
         date: 'February 19, 2026',
-        readTime: '6 min read',
-        icon: '✂️',
-        keywords: ['split pdf', 'extract pdf pages', 'separate pdf', 'pdf splitter online', 'cut pdf'],
-        content: `
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
-                <div class="flex items-center justify-between flex-wrap gap-4">
-                    <div>
-                        <h3 class="text-lg font-bold text-blue-900 m-0">Ready to try this tool?</h3>
-                        <p class="text-sm text-blue-700 m-0">Fast, free, and secure.</p>
-                    </div>
-                    <a href="/tools/split-pdf" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors">
-                        Start Now &rarr;
-                    </a>
-                </div>
-            </div>
-            <h2>Why Split a PDF?</h2>
-            <p>We've all received that massive 100-page document where only pages 10 to 15 are actually relevant to us. Sharing the entire file is cumbersome, wastes bandwidth, and forces the recipient to hunt for the information.</p>
-            <p><strong>Splitting a PDF</strong> allows you to perform surgery on your document. You can remove unnecessary cover pages, extract a single chapter, or break a large report into separate files for each department.</p>
-
-            <h2>Different Ways to Split</h2>
-            <p>Our tool offers flexibility in how you want to divide your document:</p>
-            <ul>
-                <li><strong>Extract by Page Number:</strong> Simply type "1-5" to get the first five pages, or "1,3,5" to pick specific individual pages.</li>
-                <li><strong>Split into Single Pages:</strong> This explodes the document, turning a 10-page PDF into 10 separate 1-page PDF files. Great for separating scanned receipts.</li>
-            </ul>
-
-            <h2>Step-by-Step Guide</h2>
-            <ol>
-                <li><strong>Upload:</strong> Drag your large PDF into the <a href="/tools/split-pdf">Split PDF tool</a>.</li>
-                <li><strong>Select Pages:</strong> Use our visual interface to click on the pages you want to keep, or enter the range manually.</li>
-                <li><strong>Process:</strong> Click "Split". The tool removes the unselected binary data and repackages the remaining content.</li>
-                <li><strong>Download:</strong> Get your streamlined, lightweight PDF file.</li>
-            </ol>
-
-            <h2>Conclusion</h2>
-            <p>Don't let large files slow you down. Extract exactly what you need with our Split PDF tool. It's fast, free, and precise.</p>
-        `
+        readTime: '15 min read',
+        icon: '🔗',
+        thumbnail: '/blog-thumbnails/merge-pdf.png',
+        keywords: ['merge pdf', 'combine pdf', 'join pdf files', 'pdf merger online', 'free pdf tools', 'consolidate documents'],
+        content: contentMergePdf
     },
     {
         slug: 'compressing-pdf-to-target-size',

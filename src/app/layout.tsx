@@ -82,7 +82,7 @@ export default async function RootLayout({
           <ThemeProvider>
             <div className="flex flex-col min-h-screen">
               <Header />
-              {settings.showHeaderAd !== false && (
+              {settings.showHeaderAd && (
                 <div className="container">
                   <AdSpace type="header" />
                 </div>
@@ -90,7 +90,7 @@ export default async function RootLayout({
               <main className="flex-grow">
                 {children}
               </main>
-              {settings.showFooterAd !== false && (
+              {settings.showFooterAd && (
                 <div className="container">
                   <AdSpace type="footer" />
                 </div>

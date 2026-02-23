@@ -147,6 +147,15 @@ export const Header = () => {
                     {session ? (
                         <div className="flex items-center gap-3">
                             <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--muted)' }}>Hi, {session.user?.name?.split(' ')[0]}</span>
+                            {(session.user as any)?.role === 'admin' && (
+                                <Link
+                                    href="/admin"
+                                    className="btn btn-primary"
+                                    style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', backgroundColor: 'var(--primary)', color: 'white' }}
+                                >
+                                    Dashboard
+                                </Link>
+                            )}
                             <button
                                 onClick={() => signOut()}
                                 className="btn"

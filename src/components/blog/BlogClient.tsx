@@ -40,6 +40,16 @@ export default function BlogClient({ post, tool }: BlogClientProps) {
                     </div>
                 </div>
 
+                {post.thumbnail && (
+                    <div style={{ marginBottom: '2.5rem', borderRadius: 'var(--radius)', overflow: 'hidden', width: '100%', height: 'auto', maxHeight: '450px' }}>
+                        <img
+                            src={post.thumbnail}
+                            alt={post.title}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
+                    </div>
+                )}
+
                 <h1 style={{ fontSize: '3.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem' }}>
                     {post.title}
                 </h1>
