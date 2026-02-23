@@ -34,9 +34,23 @@ async function getSettings(): Promise<Settings> {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.pdffileconverter.online'),
   title: "PDF FILE Converter | Free Online PDF & File Converter",
   description: "Every tool you need to use PDFs, images, and documents in one place. Merge, split, compress, convert, rotate, unlock and watermark PDFs with just a few clicks.",
   keywords: "pdf tools, file converter, merge pdf, split pdf, compress pdf, pdf to word, jpg to pdf",
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: '/',
+    title: 'PDF FILE Converter | Free Online PDF & File Converter',
+    description: 'Every tool you need to use PDFs, images, and documents in one place.',
+    siteName: 'PDF FILE Converter',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'PDF FILE Converter | Free Online PDF & File Converter',
+    description: 'Every tool you need to use PDFs, images, and documents in one place.',
+  }
 };
 
 export default async function RootLayout({
