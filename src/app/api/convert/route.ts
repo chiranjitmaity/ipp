@@ -52,7 +52,9 @@ export async function POST(req: NextRequest) {
         const isFileLessTool = toolId === 'youtube-thumb-download' ||
             toolId === 'url-shortener' ||
             toolId === 'qr-generator' ||
-            toolId === 'url-qr';
+            toolId === 'url-qr' ||
+            toolId === 'youtube-tag-generator' ||
+            toolId === 'hashtag-generator';
 
         if ((processedFiles.length === 0 && !isFileLessTool) || !toolId) {
             return NextResponse.json({ error: 'Missing file(s) or tool ID' }, { status: 400 });

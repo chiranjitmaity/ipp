@@ -219,7 +219,7 @@ export default function ToolPage() {
         return <StudentToolInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
     }
 
-    if (currentTool.id === 'youtube-thumb-download' || currentTool.id === 'url-shortener' || currentTool.id === 'qr-generator' || currentTool.id === 'url-qr') {
+    if (currentTool.id === 'youtube-thumb-download' || currentTool.id === 'url-shortener' || currentTool.id === 'qr-generator' || currentTool.id === 'url-qr' || currentTool.id === 'youtube-tag-generator' || currentTool.id === 'hashtag-generator') {
         return <SocialToolInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
     }
 

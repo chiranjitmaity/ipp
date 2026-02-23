@@ -693,6 +693,23 @@ export const TOOLS: Tool[] = [
         href: '/tools/url-qr',
     },
 
+    {
+        id: 'youtube-tag-generator',
+        title: 'YT Tag Generator',
+        description: 'Analyze keywords to generate SEO YouTube tags.',
+        category: TOOL_CATEGORIES.MOBILE_SOCIAL,
+        icon: Hash,
+        href: '/tools/youtube-tag-generator',
+    },
+    {
+        id: 'hashtag-generator',
+        title: 'Hashtag Generator',
+        description: 'Generate trending hashtags for social media.',
+        category: TOOL_CATEGORIES.MOBILE_SOCIAL,
+        icon: Hash,
+        href: '/tools/hashtag-generator',
+    },
+
     // --- Text & Writing ---
     {
         id: 'word-counter',

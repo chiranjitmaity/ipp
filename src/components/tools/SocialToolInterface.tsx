@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Download, RefreshCw, AlertCircle, CheckCircle2, Link as LinkIcon, Type } from 'lucide-react';
+import { Download, RefreshCw, AlertCircle, CheckCircle2, Link as LinkIcon, Type, Copy } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface SocialToolInterfaceProps {
@@ -17,10 +17,13 @@ export const SocialToolInterface = ({ toolId, title, description }: SocialToolIn
     const [error, setError] = useState('');
 
     const isUrlTool = toolId === 'youtube-thumb-download' || toolId === 'url-shortener' || toolId === 'url-qr';
+    const isTagTool = toolId === 'youtube-tag-generator' || toolId === 'hashtag-generator';
+
     const placeholder = toolId === 'youtube-thumb-download' ? 'https://youtube.com/watch?v=...'
         : toolId === 'url-shortener' ? 'https://example.com/long-url'
             : toolId === 'url-qr' ? 'https://example.com'
-                : 'Enter text to generate QR code...';
+                : isTagTool ? 'Enter topic or keyword (e.g., tech news, coding tutorial)...'
+                    : 'Enter text to generate QR code...';
 
     const handleProcess = async () => {
         if (!input) return;
@@ -81,6 +84,17 @@ export const SocialToolInterface = ({ toolId, title, description }: SocialToolIn
         setError('');
     };
 
+    const handleCopy = async () => {
+        if (result.content) {
+            try {
+                await navigator.clipboard.writeText(result.content);
+                alert('Copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+        }
+    };
+
     return (
         <div className="container" style={{ maxWidth: '800px', padding: '4rem 1.5rem' }}>
             <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
@@ -118,7 +132,8 @@ export const SocialToolInterface = ({ toolId, title, description }: SocialToolIn
                                 disabled={!input}
                                 style={{ padding: '1rem', fontSize: '1.125rem' }}
                             >
-                                {toolId === 'youtube-thumb-download' ? 'Fetch Thumbnail' : 'Generate'}
+                                {toolId === 'youtube-thumb-download' ? 'Fetch Thumbnail' :
+                                    isTagTool ? 'Generate' : 'Generate'}
                             </button>
                         </motion.div>
                     )}
@@ -155,10 +170,15 @@ export const SocialToolInterface = ({ toolId, title, description }: SocialToolIn
                             )}
 
                             <div className="flex gap-4">
-                                {result.url && (
+                                {result.url && !isTagTool && (
                                     <a href={result.url} download="result" className="btn btn-primary" style={{ backgroundColor: '#10b981' }}>
                                         <Download size={20} /> Download
                                     </a>
+                                )}
+                                {isTagTool && result.content && (
+                                    <button className="btn btn-primary" onClick={handleCopy} style={{ backgroundColor: '#10b981' }}>
+                                        <Copy size={20} /> Copy to Clipboard
+                                    </button>
                                 )}
                                 <button className="btn" onClick={reset}>Convert Another</button>
                             </div>

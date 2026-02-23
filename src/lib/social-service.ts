@@ -116,7 +116,7 @@ export class SocialService {
             // --- QR Generator / URL to QR ---
             case 'qr-generator':
             case 'url-qr':
-                const text = options.text || 'https://ilovepdftools.com';
+                const text = options.url || options.text || 'https://ilovepdftools.com';
                 outputBuffer = await QRCode.toBuffer(text, {
                     width: 500,
                     margin: 2,
@@ -160,6 +160,74 @@ export class SocialService {
                 outputBuffer = Buffer.from(`Shortened URL:\n${shortUrl}\n\nOriginal URL:\n${options.url}`);
                 contentType = 'text/plain';
                 filename = 'shortened_url.txt';
+                break;
+
+            // --- YouTube Tag Generator ---
+            case 'youtube-tag-generator':
+                if (!options.text) throw new Error('No topic provided');
+                const topic = options.text.trim().toLowerCase();
+                const baseWords = topic.split(' ').filter(String);
+
+                const generatedTags = [
+                    topic,
+                    ...baseWords,
+                    `${topic} 2024`,
+                    `how to ${topic}`,
+                    `${topic} tutorial`,
+                    `best ${topic}`,
+                    `${topic} explained`,
+                    `${topic} tips`,
+                    `what is ${topic}`,
+                    `${baseWords[0]} tutorial`,
+                    `${baseWords[0]} for beginners`,
+                    'viral',
+                    'trending',
+                    'youtube'
+                ];
+
+                // Add some variations
+                if (baseWords.length > 1) {
+                    generatedTags.push(baseWords.join('')); // no spaces
+                    generatedTags.push(`${baseWords[1]} ${baseWords[0]}`); // swap
+                }
+
+                // Filter out duplicates and limit to reasonable amount
+                const uniqueTags = [...new Set(generatedTags)].filter(t => t.length > 2).slice(0, 20);
+
+                outputBuffer = Buffer.from(uniqueTags.join(', '));
+                contentType = 'text/plain';
+                filename = 'youtube_tags.txt';
+                break;
+
+            // --- Hashtag Generator ---
+            case 'hashtag-generator':
+                if (!options.text) throw new Error('No topic provided');
+                const hwTitle = options.text.trim().toLowerCase();
+                const hwWords = hwTitle.split(' ').filter(String);
+
+                const hashtags = [
+                    `#${hwTitle.replace(/\s+/g, '')}`,
+                    ...hwWords.map((w: string) => `#${w.replace(/[^a-z0-9]/g, '')}`),
+                    '#viral',
+                    '#trending',
+                    '#explorepage',
+                    '#foryou',
+                    '#fyp',
+                    `#${hwWords[0]}life`,
+                    `#${hwWords[0]}gram`,
+                    '#instagood',
+                    '#photooftheday',
+                    '#like4like',
+                    '#followme',
+                    '#picoftheday',
+                    '#instadaily'
+                ];
+
+                const uniqueHashtags = [...new Set(hashtags.filter(h => h.length > 2))].slice(0, 25);
+
+                outputBuffer = Buffer.from(uniqueHashtags.join(' '));
+                contentType = 'text/plain';
+                filename = 'hashtags.txt';
                 break;
 
             default:

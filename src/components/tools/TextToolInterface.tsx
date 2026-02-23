@@ -27,7 +27,8 @@ export const TextToolInterface = ({ toolId, title, description }: TextToolProps)
             case 'title': result = inputText.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()); break;
             case 'sentence': result = inputText.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, (c) => c.toUpperCase()); break;
             case 'remove-dup':
-                result = [...new Set(inputText.split('\n'))].join('\n');
+                // Trim trailing spaces and handle Windows line endings
+                result = [...new Set(inputText.split(/\r?\n/).map(line => line.trimEnd()))].join('\n');
                 break;
             case 'reverse': result = inputText.split('').reverse().join(''); break;
         }
