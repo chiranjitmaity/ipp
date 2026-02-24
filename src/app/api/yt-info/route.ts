@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
             return true;
         }).map(f => ({
             itag: f.itag,
-            resolution: f.qualityLabel,
+            resolution: f.qualityLabel as string,
             type: 'video',
             container: f.container,
             hasAudio: true,
