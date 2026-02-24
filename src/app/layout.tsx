@@ -39,6 +39,7 @@ export const metadata: Metadata = {
   title: "PDF FILE Converter | Free Online PDF & File Converter",
   description: "Every tool you need to use PDFs, images, and documents in one place. Merge, split, compress, convert, rotate, unlock and watermark PDFs with just a few clicks.",
   keywords: "pdf tools, file converter, merge pdf, split pdf, compress pdf, pdf to word, jpg to pdf",
+  manifest: "/manifest.json",
   openGraph: {
     type: 'website',
     locale: 'en_US',
