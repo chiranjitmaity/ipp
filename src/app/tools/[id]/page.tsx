@@ -388,8 +388,22 @@ export default function ToolPage() {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                return { success: false, error: errorData.error || 'Conversion failed' };
+                let errorMessage = `Server error: ${response.status} ${response.statusText}`;
+                try {
+                    const text = await response.text();
+                    try {
+                        const errorData = JSON.parse(text);
+                        if (errorData.error) errorMessage = errorData.error;
+                    } catch (e) {
+                        // Not JSON, use text if small
+                        if (text && text.length < 200 && !text.includes('<html')) {
+                            errorMessage = text;
+                        }
+                    }
+                } catch (e) {
+                    // Ignore text reading errors
+                }
+                return { success: false, error: errorMessage };
             }
 
             const blob = await response.blob();
@@ -397,7 +411,8 @@ export default function ToolPage() {
             return { success: true, downloadUrl: url };
         } catch (error) {
             console.error('Conversion error:', error);
-            return { success: false, error: 'Connection to server failed' };
+            const msg = error instanceof Error ? error.message : String(error);
+            return { success: false, error: `Connection failed: ${msg}` };
         }
     };
 
