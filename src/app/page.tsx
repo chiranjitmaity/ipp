@@ -18,13 +18,12 @@ export default function Home() {
   const popularTools = TOOLS.filter(tool => tool.popular);
 
   return (
-    <div className="home-page">
+    <div className="home-page" style={{ overflowX: 'hidden' }}>
       {/* Hero Section */}
       <section className="hero" style={{
         textAlign: 'center',
         padding: '8rem 0 6rem',
         position: 'relative',
-        overflow: 'hidden',
         borderBottom: '1px solid var(--border)'
       }}>
         {/* Decorative background blur blobs */}
