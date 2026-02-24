@@ -590,21 +590,24 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         slug: 'youtube-video-download',
+        toolId: 'youtube-video-download',
         title: 'Downloading YouTube Videos: The Ultimate Guide to Offline Viewing',
-        excerpt: 'Learn the fundamental differences between streaming content and true local ownership. We explore how our advanced zero-memory streaming architecture flawlessly securely allows you to permanently seamlessly capture high-definition YouTube videos and extract pristine MP3 audio directly purely to your active device for unrestricted offline playback.',
-        content: contentYoutubeVideoDownload,
-        date: '2024-03-20',
+        description: 'Learn the fundamental differences between streaming content and true local ownership. We explore how our advanced zero-memory streaming architecture flawlessly securely allows you to permanently seamlessly capture high-definition YouTube videos and extract pristine MP3 audio directly purely to your active device for unrestricted offline playback.',
+        date: 'March 20, 2024',
         readTime: '4 min read',
-        category: 'Media Management',
-        tags: ['youtube', 'download', 'mp4', 'mp3', 'offline']
+        icon: '📺',
+        keywords: ['youtube', 'download', 'mp4', 'mp3', 'offline'],
+        content: contentYoutubeVideoDownload
     },
     {
         slug: 'social-video-download',
+        toolId: 'instagram-reels-download',
         title: 'The Ultimate Guide to Downloading Social Media Videos',
         description: 'Discover how to break free from the algorithm feed. Our unified suite of advanced zero-memory proxy downloaders allows you to instantly, securely, and flawlessly capture pristine uncompressed HD videos directly from Instagram Reels, TikTok, Facebook, and Twitter entirely without relying on clunky screen recording or risking your account metadata.',
-        content: contentSocialVideoDownload,
-        date: '2024-03-24',
+        date: 'March 24, 2024',
         readTime: '6 min read',
-        category: 'Social Media'
+        icon: '📱',
+        keywords: ['instagram', 'tiktok', 'facebook', 'twitter', 'download'],
+        content: contentSocialVideoDownload
     }
 ];
