@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
                     <p>We take your privacy very seriously. Here is how we handle your files:</p>
                     <ul>
                         <li><strong>No Permanent Storage:</strong> We do not store your files permanently. All uploaded files are processed in-memory or in temporary storage.</li>
-                        <li><strong>Automatic Deletion:</strong> All files (both original uploads and converted results) are automatically and permanently deleted from our servers within 1 hour of processing.</li>
+                        <li><strong>Automatic Deletion:</strong> All files (both original uploads and converted results) are automatically and permanently deleted from our servers within 1 minute of processing.</li>
                         <li><strong>No Access:</strong> Our staff does not have access to your files. The entire process is automated.</li>
                     </ul>
                 </section>

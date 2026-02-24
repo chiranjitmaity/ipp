@@ -130,7 +130,7 @@ export default function Home() {
             <div className="flex flex-col items-center gap-4">
               <ShieldCheck size={48} color="var(--primary)" />
               <h3>Your privacy is our priority</h3>
-              <p style={{ color: 'var(--muted)' }}>We delete your files automatically after 1 hour. No one but you can access them.</p>
+              <p style={{ color: 'var(--muted)' }}>We delete your files automatically after 1 minute. No one but you can access them.</p>
             </div>
             <div className="flex flex-col items-center gap-4">
               <Zap size={48} color="var(--secondary)" />

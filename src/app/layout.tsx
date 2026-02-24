@@ -10,6 +10,7 @@ import { AdSpace } from "@/components/ui/AdSpace";
 import { AuthContext } from "@/components/layout/AuthContext";
 import clientPromise from "@/lib/mongodb";
 import VisitorTracker from '@/components/VisitorTracker';
+import { PrivacyPopup } from "@/components/ui/PrivacyPopup";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
@@ -105,6 +106,7 @@ export default async function RootLayout({
           </ThemeProvider>
         </AuthContext>
         <SchemaMarkup />
+        <PrivacyPopup />
       </body>
     </html>
   );

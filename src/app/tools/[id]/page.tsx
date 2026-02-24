@@ -11,6 +11,7 @@ import { AIToolInterface } from '@/components/tools/AIToolInterface';
 import { StudentToolInterface } from '@/components/tools/StudentToolInterface';
 import { SocialToolInterface } from '@/components/tools/SocialToolInterface';
 import { ThumbnailMakerInterface } from '@/components/tools/ThumbnailMakerInterface';
+import { YouTubeDownloaderInterface } from '@/components/tools/YouTubeDownloaderInterface';
 import React, { useState, useEffect } from 'react';
 
 const RESIZE_PRESETS = [
@@ -225,6 +226,10 @@ export default function ToolPage() {
 
     if (currentTool.id === 'youtube-thumb-maker') {
         return <ThumbnailMakerInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
+    }
+
+    if (currentTool.id === 'youtube-video-download') {
+        return <YouTubeDownloaderInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
     }
 
     // --- Standard File Conversion Tool Logic ---

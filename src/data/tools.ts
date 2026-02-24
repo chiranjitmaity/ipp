@@ -1,7 +1,7 @@
 import {
     FileText, Merge, Scissors, Minimize2,
     FileType, FileSpreadsheet, ImageIcon, Maximize,
-    Crop, Image, Presentation,
+    Crop, Image, Presentation, Download,
     FileCode, Zap, LucideIcon,
     Wrench, Eraser, Layers, Hash, Scan, Palette, EyeOff, GitCompare,
     ArrowUpFromLine, Stamp, PenTool, Lock, Unlock, ShieldCheck,
@@ -641,6 +641,15 @@ export const TOOLS: Tool[] = [
         category: TOOL_CATEGORIES.MOBILE_SOCIAL,
         icon: Image,
         href: '/tools/youtube-thumb-download',
+    },
+    {
+        id: 'youtube-video-download',
+        title: 'YT Video Downloader',
+        description: 'Download YouTube videos as MP4 or convert them to MP3 audio.',
+        category: TOOL_CATEGORIES.MOBILE_SOCIAL,
+        icon: Download,
+        href: '/tools/youtube-video-download',
+        popular: true,
     },
     {
         id: 'youtube-thumb-maker',
