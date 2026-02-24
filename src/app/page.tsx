@@ -4,6 +4,8 @@ import { ToolCard } from '@/components/tools/ToolCard';
 import { TOOLS, TOOL_CATEGORIES } from '@/data/tools';
 import { Search, ArrowRight, Star, ShieldCheck, Zap, HelpCircle } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,8 +46,8 @@ export default function Home() {
             Free, easy to use, and secure online tools to merge, split, compress, and convert your files in seconds.
           </p>
 
-          <div style={{ position: 'relative', maxWidth: '600px', margin: '0 auto' }}>
-            <Search size={22} style={{ position: 'absolute', left: '1.5rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)', zIndex: 2 }} />
+          <div style={{ position: 'relative', maxWidth: '600px', margin: '0 auto', zIndex: 10 }}>
+            <Search size={22} style={{ position: 'absolute', left: '1.5rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)', zIndex: 2, pointerEvents: 'none' }} />
             <input
               type="text"
               placeholder="Search for a tool (e.g., 'Merge PDF')..."
@@ -64,8 +66,85 @@ export default function Home() {
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
               }}
               onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(229, 50, 45, 0.15), 0 20px 25px -5px rgb(0 0 0 / 0.1)' }}
-              onBlur={(e) => { e.target.style.borderColor = 'transparent'; e.target.style.boxShadow = '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04), 0 0 40px rgba(0,0,0,0.05)' }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'transparent';
+                e.target.style.boxShadow = '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04), 0 0 40px rgba(0,0,0,0.05)';
+                setTimeout(() => setSearchQuery(''), 200);
+              }}
             />
+
+            {/* Auto Dropdown Menu */}
+            <AnimatePresence>
+              {searchQuery.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    right: 0,
+                    marginTop: '0.5rem',
+                    backgroundColor: 'white',
+                    borderRadius: '12px',
+                    padding: '0.5rem',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+                    border: '1px solid var(--border)',
+                    maxHeight: '300px',
+                    overflowY: 'auto',
+                    textAlign: 'left'
+                  }}
+                >
+                  {filteredTools.length > 0 ? (
+                    filteredTools.map((tool) => {
+                      const Icon = tool.icon;
+                      return (
+                        <Link
+                          key={tool.id}
+                          href={tool.href}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem',
+                            padding: '0.75rem 1rem',
+                            textDecoration: 'none',
+                            color: 'inherit',
+                            borderRadius: '8px',
+                            transition: 'background-color 0.2s ease'
+                          }}
+                          className="hover:bg-gray-50 drop-link"
+                        >
+                          <div style={{
+                            width: '40px',
+                            height: '40px',
+                            backgroundColor: 'var(--primary)10',
+                            borderRadius: '8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'var(--primary)'
+                          }}>
+                            <Icon size={20} />
+                          </div>
+                          <div>
+                            <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--foreground)' }}>{tool.title}</div>
+                            <div style={{ fontSize: '0.875rem', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '400px' }}>
+                              {tool.description}
+                            </div>
+                          </div>
+                        </Link>
+                      );
+                    })
+                  ) : (
+                    <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--muted)' }}>
+                      No tools found matching "{searchQuery}"
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </section>
