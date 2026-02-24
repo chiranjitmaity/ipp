@@ -7,8 +7,6 @@ import { contentWordToPdf } from './blog-content/word-to-pdf';
 import { contentMergePdf } from './blog-content/merge-pdf';
 import { contentYoutubeVideoDownload } from './blog-content/youtube-video-download';
 import { contentSocialVideoDownload } from './blog-content/social-video-download';
-import { contentInstaReels } from './blog-content/instagram-downloader';
-import { contentTwitterVideo } from './blog-content/twitter-downloader';
 
 export interface BlogPost {
     slug: string;
@@ -554,35 +552,13 @@ export const BLOG_POSTS: BlogPost[] = [
     },
     {
         slug: 'social-video-download',
-        toolId: 'instagram-reels-download',
+        toolId: 'tiktok-video-download',
         title: 'The Ultimate Guide to Downloading Social Media Videos',
-        description: 'Discover how to break free from the algorithm feed. Our unified suite of advanced zero-memory proxy downloaders allows you to instantly, securely, and flawlessly capture pristine uncompressed HD videos directly from Instagram Reels, TikTok, Facebook, and Twitter entirely without relying on clunky screen recording or risking your account metadata.',
+        description: 'Discover how to break free from the algorithm feed. Our unified suite of advanced zero-memory proxy downloaders allows you to instantly, securely, and flawlessly capture pristine uncompressed HD videos.',
         date: 'March 24, 2024',
         readTime: '6 min read',
         icon: '📱',
-        keywords: ['instagram', 'tiktok', 'facebook', 'twitter', 'download'],
+        keywords: ['tiktok', 'facebook', 'download'],
         content: contentSocialVideoDownload
-    },
-    {
-        slug: 'instagram-reels-downloader-guide',
-        toolId: 'instagram-reels-download',
-        title: 'How to Download Instagram Reels and Videos Anonymously',
-        description: 'Learn how to securely and anonymously download high-definition Instagram Reels, videos, and grid posts directly to your device without logging in.',
-        date: 'March 25, 2024',
-        readTime: '4 min read',
-        icon: '📸',
-        keywords: ['instagram reels', 'download instagram', 'anonymous download', 'ig video', 'save reel'],
-        content: contentInstaReels
-    },
-    {
-        slug: 'twitter-x-video-downloader-guide',
-        toolId: 'twitter-video-download',
-        title: 'Download Twitter (X) Videos & GIFs in High Quality',
-        description: 'Discover the best way to intercept and download heavily compressed Twitter streaming videos and looping GIFs directly to your camera roll.',
-        date: 'March 25, 2024',
-        readTime: '3 min read',
-        icon: '🐦',
-        keywords: ['twitter video', 'x video download', 'save gif twitter', 'download from x'],
-        content: contentTwitterVideo
     }
 ];

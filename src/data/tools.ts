@@ -651,14 +651,6 @@ export const TOOLS: Tool[] = [
         href: '/tools/youtube-video-download',
     },
     {
-        id: 'instagram-reels-download',
-        title: 'IG Reels Downloader',
-        description: 'Download Instagram Reels and Videos in high quality.',
-        category: TOOL_CATEGORIES.MOBILE_SOCIAL,
-        icon: Download,
-        href: '/tools/instagram-reels-download',
-    },
-    {
         id: 'facebook-video-download',
         title: 'FB Video Downloader',
         description: 'Download HD public videos from Facebook instantly.',
@@ -673,14 +665,6 @@ export const TOOLS: Tool[] = [
         category: TOOL_CATEGORIES.MOBILE_SOCIAL,
         icon: Download,
         href: '/tools/tiktok-video-download',
-    },
-    {
-        id: 'twitter-video-download',
-        title: 'X/Twitter Downloader',
-        description: 'Download videos and GIFs off Twitter/X in high resolution.',
-        category: TOOL_CATEGORIES.MOBILE_SOCIAL,
-        icon: Download,
-        href: '/tools/twitter-video-download',
     },
     {
         id: 'youtube-thumb-maker',

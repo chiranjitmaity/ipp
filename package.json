@@ -12,6 +12,8 @@
     "@auth/mongodb-adapter": "^3.11.1",
     "@distube/ytdl-core": "^4.16.12",
     "@imgly/background-removal": "^1.7.0",
+    "@mrnima/instagram-downloader": "^1.0.0",
+    "@sasmeee/igdl": "^0.0.1-security",
     "@types/qrcode": "^1.5.6",
     "clsx": "^2.1.1",
     "docx": "^9.5.1",
@@ -30,6 +32,10 @@
     "next-auth": "^4.24.13",
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",
+    "priyansh-ig-downloader": "^2.0.4",
+    "puppeteer": "^24.37.5",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "qrcode": "^1.5.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -37,7 +43,8 @@
     "react-selecto": "^1.26.3",
     "sharp": "^0.34.5",
     "tesseract.js": "^7.0.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "youtube-dl-exec": "^3.1.2"
   },
   "devDependencies": {
     "@types/node": "^20",

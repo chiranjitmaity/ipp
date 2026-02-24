@@ -31,22 +31,15 @@ export const AdvancedSocialDownloader = ({ toolId, title, description }: Advance
     const [result, setResult] = useState<VideoMetadata | null>(null);
 
     // Dynamic Theming based on the tool
-    const isInstagram = toolId === 'instagram-reels-download';
     const isFacebook = toolId === 'facebook-video-download';
     const isTikTok = toolId === 'tiktok-video-download';
-    const isTwitter = toolId === 'twitter-video-download';
 
     let PlatformIcon: any = LinkIcon;
     let themeColor = 'var(--primary)';
     let gradient = 'linear-gradient(135deg, var(--card), var(--background))';
     let platformName = 'Social Media';
 
-    if (isInstagram) {
-        PlatformIcon = Instagram;
-        themeColor = '#E1306C';
-        gradient = 'linear-gradient(135deg, #fdf4f7, #fff)';
-        platformName = 'Instagram';
-    } else if (isFacebook) {
+    if (isFacebook) {
         PlatformIcon = Facebook;
         themeColor = '#1877F2';
         gradient = 'linear-gradient(135deg, #f0f5ff, #fff)';
@@ -56,11 +49,6 @@ export const AdvancedSocialDownloader = ({ toolId, title, description }: Advance
         themeColor = '#00f2fe'; // TikTok uses black/cyan/red, using a bright cyan accent
         gradient = 'linear-gradient(135deg, #f5f5f5, #fff)';
         platformName = 'TikTok';
-    } else if (isTwitter) {
-        PlatformIcon = Twitter;
-        themeColor = '#1DA1F2';
-        gradient = 'linear-gradient(135deg, #f4f8fb, #fff)';
-        platformName = 'Twitter / X';
     }
 
     const handlePaste = async () => {
