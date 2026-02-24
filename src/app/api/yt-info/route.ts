@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
         }
 
         const availableFormats = [...videoFormats];
-        if (bestAudioFormat) availableFormats.push(bestAudioFormat);
+        if (bestAudioFormat) availableFormats.push(bestAudioFormat as any);
 
         // Basic details
         const details = {
