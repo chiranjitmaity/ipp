@@ -6,6 +6,7 @@ import { contentPdfToWord } from './blog-content/pdf-to-word';
 import { contentWordToPdf } from './blog-content/word-to-pdf';
 import { contentMergePdf } from './blog-content/merge-pdf';
 import { contentYoutubeVideoDownload } from './blog-content/youtube-video-download';
+import { contentSocialVideoDownload } from './blog-content/social-video-download';
 
 export interface BlogPost {
     slug: string;
@@ -594,6 +595,16 @@ export const BLOG_POSTS: BlogPost[] = [
         content: contentYoutubeVideoDownload,
         date: '2024-03-20',
         readTime: '4 min read',
-        category: 'Media Management'
+        category: 'Media Management',
+        tags: ['youtube', 'download', 'mp4', 'mp3', 'offline']
+    },
+    {
+        slug: 'social-video-download',
+        title: 'The Ultimate Guide to Downloading Social Media Videos',
+        description: 'Discover how to break free from the algorithm feed. Our unified suite of advanced zero-memory proxy downloaders allows you to instantly, securely, and flawlessly capture pristine uncompressed HD videos directly from Instagram Reels, TikTok, Facebook, and Twitter entirely without relying on clunky screen recording or risking your account metadata.',
+        content: contentSocialVideoDownload,
+        date: '2024-03-24',
+        readTime: '6 min read',
+        category: 'Social Media'
     }
 ];

@@ -12,6 +12,7 @@ import { StudentToolInterface } from '@/components/tools/StudentToolInterface';
 import { SocialToolInterface } from '@/components/tools/SocialToolInterface';
 import { ThumbnailMakerInterface } from '@/components/tools/ThumbnailMakerInterface';
 import { YouTubeDownloaderInterface } from '@/components/tools/YouTubeDownloaderInterface';
+import { AdvancedSocialDownloader } from '@/components/tools/AdvancedSocialDownloader';
 import React, { useState, useEffect } from 'react';
 
 const RESIZE_PRESETS = [
@@ -226,6 +227,17 @@ export default function ToolPage() {
 
     if (currentTool.id === 'youtube-thumb-maker') {
         return <ThumbnailMakerInterface toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
+    }
+
+    const isSocialDownloader = [
+        'instagram-reels-download',
+        'facebook-video-download',
+        'tiktok-video-download',
+        'twitter-video-download'
+    ].includes(currentTool.id);
+
+    if (isSocialDownloader) {
+        return <AdvancedSocialDownloader toolId={currentTool.id} title={currentTool.title} description={currentTool.description} />;
     }
 
     if (currentTool.id === 'youtube-video-download') {
