@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BlogPost } from '@/data/blogs';
 import { Search } from 'lucide-react';
 
@@ -30,7 +30,7 @@ export default function BlogIndexClient({ posts }: Props) {
                     Master your files with our comprehensive guides. Learn how to merge, compress, convert, and edit like a pro.
                 </p>
 
-                <div style={{ maxWidth: '600px', margin: '0 auto', position: 'relative' }}>
+                <div style={{ maxWidth: '600px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
                     <div style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)', pointerEvents: 'none' }}>
                         <Search size={20} />
                     </div>
@@ -51,8 +51,73 @@ export default function BlogIndexClient({ posts }: Props) {
                             boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
                         }}
                         onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
-                        onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
+                        onBlur={(e) => {
+                            e.target.style.borderColor = 'var(--border)';
+                            // Slight delay to allow clicks on dropdown items
+                            setTimeout(() => setSearchTerm(''), 200);
+                        }}
                     />
+
+                    {/* Auto Dropdown Menu */}
+                    <AnimatePresence>
+                        {searchTerm.length > 0 && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.2 }}
+                                style={{
+                                    position: 'absolute',
+                                    top: '100%',
+                                    left: 0,
+                                    right: 0,
+                                    marginTop: '0.5rem',
+                                    backgroundColor: 'white',
+                                    borderRadius: '12px',
+                                    padding: '0.5rem',
+                                    boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+                                    border: '1px solid var(--border)',
+                                    maxHeight: '300px',
+                                    overflowY: 'auto',
+                                    textAlign: 'left'
+                                }}
+                            >
+                                {filteredPosts.length > 0 ? (
+                                    filteredPosts.map((post) => (
+                                        <Link
+                                            key={post.slug}
+                                            href={`/blog/${post.slug}`}
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '1rem',
+                                                padding: '0.75rem 1rem',
+                                                textDecoration: 'none',
+                                                color: 'inherit',
+                                                borderRadius: '8px',
+                                                transition: 'background-color 0.2s ease'
+                                            }}
+                                            className="hover:bg-gray-50 drop-link"
+                                        >
+                                            <div style={{ fontSize: '1.5rem', minWidth: '30px', textAlign: 'center' }}>
+                                                {post.icon}
+                                            </div>
+                                            <div>
+                                                <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--foreground)' }}>{post.title}</div>
+                                                <div style={{ fontSize: '0.875rem', color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '400px' }}>
+                                                    {post.description}
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--muted)' }}>
+                                        No articles found.
+                                    </div>
+                                )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
 

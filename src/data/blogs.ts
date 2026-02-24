@@ -7,6 +7,8 @@ import { contentWordToPdf } from './blog-content/word-to-pdf';
 import { contentMergePdf } from './blog-content/merge-pdf';
 import { contentYoutubeVideoDownload } from './blog-content/youtube-video-download';
 import { contentSocialVideoDownload } from './blog-content/social-video-download';
+import { contentInstaReels } from './blog-content/instagram-downloader';
+import { contentTwitterVideo } from './blog-content/twitter-downloader';
 
 export interface BlogPost {
     slug: string;
@@ -45,55 +47,6 @@ export const BLOG_POSTS: BlogPost[] = [
         thumbnail: '/blog-thumbnails/word-to-pdf.png',
         keywords: ['word to pdf', 'convert docx to pdf', 'create pdf', 'online converter', 'save as pdf', 'doc to pdf'],
         content: contentWordToPdf
-    },
-    {
-        slug: 'how-to-merge-multiple-pdf-files',
-        toolId: 'merge-pdf',
-        title: 'The Ultimate Guide to Merging Process: Combine Multiple PDFs (2026)',
-        description: 'Need to join several PDFs? Follow this detailed guide to merge your documents efficiently and securely.',
-        date: 'February 19, 2026',
-        readTime: '7 min read',
-        icon: '🔗',
-        keywords: ['merge pdf', 'combine pdf', 'join pdf files', 'pdf merger online', 'free pdf tools', 'consolidate documents'],
-        content: `
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
-                <div class="flex items-center justify-between flex-wrap gap-4">
-                    <div>
-                        <h3 class="text-lg font-bold text-blue-900 m-0">Ready to try this tool?</h3>
-                        <p class="text-sm text-blue-700 m-0">Fast, free, and secure.</p>
-                    </div>
-                    <a href="/tools/merge-pdf" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors">
-                        Start Now &rarr;
-                    </a>
-                </div>
-            </div>
-            <h2>The Power of Merging</h2>
-            <p>In project management, legal work, and academia, we often end up with fragmented files. You have the cover letter in one file, the main report in another, and the appendix in a third. Sending three separate attachments in an email looks unprofessional and is annoying for the recipient.</p>
-            <p>The solution is to <strong>Merge PDF files</strong>. This process takes multiple independent PDF documents and stitches them together into a single, continuous file.</p>
-            
-            <h2>When Should You Merge PDFs?</h2>
-            <p><strong>Job Applications:</strong> Recruiters prefer a single file containing your Cover Letter, CV, and Portfolio, rather than downloading three zip files.</p>
-            <p><strong>Invoicing:</strong> Combine a monthly invoice with all the supporting receipt scans into one neat package for your accountant.</p>
-            <p><strong>E-Books:</strong> If you write chapters in separate documents, merging them is the final step before publishing.</p>
-
-            <h2>How to Merge PDFs for Free</h2>
-            <p>Our tool makes this process incredibly visual and intuitive. You don't need to guess the order; you can see it.</p>
-            
-            <h3>Step 1: Upload Everything</h3>
-            <p>Go to the <a href="/tools/merge-pdf">Merge PDF tool</a>. You can select multiple files at once from your computer, or add them one by one. Don't worry if you forgot one; you can always add more later.</p>
-            
-            <h3>Step 2: Drag and Drop to Reorder</h3>
-            <p>This is the magic part. Once uploaded, you will see thumbnails of your PDF files. Simply click and drag them to change their sequence. The file on the far left will be the first page, and the file on the right will be the last. This gives you total control over the final document flow.</p>
-            
-            <h3>Step 3: Merge and Download</h3>
-            <p>Click the "Merge PDF" button. Our server processes the request, stitches the binary data of the files together, and presents you with a fresh, single PDF download.</p>
-
-            <h2>Security Questions</h2>
-            <p><strong>Is it safe?</strong> Yes. We process your files in temporary memory and delete them immediately after the transaction is complete. We do not store your sensitive contracts or personal data.</p>
-            
-            <h2>Conclusion</h2>
-            <p>Merging is one of the most essential PDF skills. It turns clutter into clarity. Try our tool today and see how much cleaner your digital filing system can be.</p>
-        `
     },
     {
         slug: 'how-to-merge-multiple-pdf-files',
@@ -609,5 +562,27 @@ export const BLOG_POSTS: BlogPost[] = [
         icon: '📱',
         keywords: ['instagram', 'tiktok', 'facebook', 'twitter', 'download'],
         content: contentSocialVideoDownload
+    },
+    {
+        slug: 'instagram-reels-downloader-guide',
+        toolId: 'instagram-reels-download',
+        title: 'How to Download Instagram Reels and Videos Anonymously',
+        description: 'Learn how to securely and anonymously download high-definition Instagram Reels, videos, and grid posts directly to your device without logging in.',
+        date: 'March 25, 2024',
+        readTime: '4 min read',
+        icon: '📸',
+        keywords: ['instagram reels', 'download instagram', 'anonymous download', 'ig video', 'save reel'],
+        content: contentInstaReels
+    },
+    {
+        slug: 'twitter-x-video-downloader-guide',
+        toolId: 'twitter-video-download',
+        title: 'Download Twitter (X) Videos & GIFs in High Quality',
+        description: 'Discover the best way to intercept and download heavily compressed Twitter streaming videos and looping GIFs directly to your camera roll.',
+        date: 'March 25, 2024',
+        readTime: '3 min read',
+        icon: '🐦',
+        keywords: ['twitter video', 'x video download', 'save gif twitter', 'download from x'],
+        content: contentTwitterVideo
     }
 ];
